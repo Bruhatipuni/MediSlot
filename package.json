@@ -1,0 +1,26 @@
+{
+  "name": "medislot",
+  "version": "1.0.0",
+  "description": "MediSlot — Doctor Appointment & Clinic Queue Management System",
+  "scripts": {
+    "install:all": "npm --prefix server install && npm --prefix client install",
+    "client": "npm --prefix client run dev",
+    "server": "npm --prefix server run dev",
+    "build": "npm --prefix client run build",
+    "test": "npm --prefix server test",
+    "seed": "npm --prefix server run seed"
+  },
+  "keywords": [
+    "react",
+    "vite",
+    "tailwind",
+    "nodejs",
+    "express",
+    "mongodb",
+    "healthcare",
+    "queue-management",
+    "appointment-booking"
+  ],
+  "author": "MediSlot Team",
+  "license": "ISC"
+}
