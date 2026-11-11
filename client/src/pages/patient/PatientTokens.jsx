@@ -40,13 +40,12 @@ const PatientTokens = () => {
 
   useEffect(() => {
     fetchTokens();
-    const interval = setInterval(fetchTokens, 8000); // Poll every 8s
+    const interval = setInterval(fetchTokens, 8000);
     return () => clearInterval(interval);
   }, []);
 
   return (
     <div className="space-y-6 animate-fadeIn">
-      {/* Header */}
       <div className="bg-white rounded-3xl p-6 sm:p-8 border border-slate-200/80 shadow-soft flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
           <div className="flex items-center gap-2 mb-2">
@@ -84,7 +83,6 @@ const PatientTokens = () => {
         </div>
       </div>
 
-      {/* Tokens List */}
       {loading ? (
         <TableSkeleton rows={3} />
       ) : tokens.length > 0 ? (
@@ -103,7 +101,6 @@ const PatientTokens = () => {
                 }`}
               >
                 <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
-                  {/* Left Column: Doctor & Appointment Details */}
                   <div className="lg:col-span-7 space-y-3.5">
                     <div className="flex items-center gap-2 flex-wrap">
                       <span
@@ -149,9 +146,7 @@ const PatientTokens = () => {
                     )}
                   </div>
 
-                  {/* Right Column: Giant Token Numbers & Wait Stats */}
                   <div className="lg:col-span-5 grid grid-cols-2 gap-3.5">
-                    {/* Your Token Card */}
                     <div
                       className={`p-5 rounded-2xl text-center border ${
                         isCurrentlyServingMe
@@ -170,7 +165,6 @@ const PatientTokens = () => {
                       </div>
                     </div>
 
-                    {/* Live Server Stats */}
                     <div
                       className={`p-5 rounded-2xl text-center border space-y-2.5 ${
                         isCurrentlyServingMe

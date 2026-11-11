@@ -24,7 +24,6 @@ const AdminDoctors = () => {
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState('');
 
-  // Add Doctor Modal State
   const [addModalOpen, setAddModalOpen] = useState(false);
   const [formData, setFormData] = useState({
     name: '',
@@ -42,7 +41,6 @@ const AdminDoctors = () => {
 
   const fetchDoctors = async () => {
     try {
-      // Admin gets all doctors (including deactivated)
       const { data } = await api.get('/doctors?limit=100');
       if (data.success) {
         setDoctors(data.doctors || []);
@@ -114,7 +112,6 @@ const AdminDoctors = () => {
 
   return (
     <div className="space-y-6">
-      {/* Header */}
       <div className="bg-white rounded-3xl p-6 sm:p-8 border border-slate-200/80 shadow-soft flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
           <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900">
@@ -134,7 +131,6 @@ const AdminDoctors = () => {
         </button>
       </div>
 
-      {/* Search Input */}
       <div className="relative w-full max-w-sm">
         <Search className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
         <input
@@ -146,7 +142,6 @@ const AdminDoctors = () => {
         />
       </div>
 
-      {/* Doctors Table */}
       {loading ? (
         <TableSkeleton rows={5} />
       ) : filteredDoctors.length > 0 ? (
@@ -236,7 +231,6 @@ const AdminDoctors = () => {
         />
       )}
 
-      {/* Add Doctor Modal */}
       <Modal
         isOpen={addModalOpen}
         onClose={() => setAddModalOpen(false)}

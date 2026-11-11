@@ -25,7 +25,6 @@ const DoctorReports = () => {
   const [patients, setPatients] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  // Upload Modal State
   const [uploadModalOpen, setUploadModalOpen] = useState(false);
   const [patientId, setPatientId] = useState(preselectedPatientId);
   const [title, setTitle] = useState('');
@@ -158,7 +157,6 @@ const DoctorReports = () => {
 
   return (
     <div className="space-y-6">
-      {/* Header */}
       <div className="bg-white rounded-3xl p-6 sm:p-8 border border-slate-200/80 shadow-soft flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
           <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900">
@@ -178,7 +176,6 @@ const DoctorReports = () => {
         </button>
       </div>
 
-      {/* Reports Table */}
       {loading ? (
         <TableSkeleton rows={4} />
       ) : reports.length > 0 ? (
@@ -259,7 +256,6 @@ const DoctorReports = () => {
         />
       )}
 
-      {/* Upload Report Modal */}
       <Modal
         isOpen={uploadModalOpen}
         onClose={() => setUploadModalOpen(false)}

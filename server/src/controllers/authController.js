@@ -2,9 +2,6 @@ import User from '../models/User.js';
 import Doctor from '../models/Doctor.js';
 import generateToken from '../utils/generateToken.js';
 
-// @desc    Register a new user (Patient)
-// @route   POST /api/auth/register
-// @access  Public
 export const register = async (req, res, next) => {
   try {
     const { name, email, password, phone, gender, dob, bloodGroup, address } = req.body;
@@ -16,7 +13,6 @@ export const register = async (req, res, next) => {
       });
     }
 
-    // Check if user exists
     const userExists = await User.findOne({ email: email.toLowerCase() });
     if (userExists) {
       return res.status(400).json({
@@ -29,7 +25,7 @@ export const register = async (req, res, next) => {
       name,
       email: email.toLowerCase(),
       password,
-      role: 'patient', // Public registration is strictly for patients
+      role: 'patient',
       phone: phone || '',
       gender: gender || 'other',
       dob: dob || null,
@@ -50,9 +46,6 @@ export const register = async (req, res, next) => {
   }
 };
 
-// @desc    Login user (Patient, Doctor, Admin)
-// @route   POST /api/auth/login
-// @access  Public
 export const login = async (req, res, next) => {
   try {
     const { email, password } = req.body;
@@ -64,7 +57,6 @@ export const login = async (req, res, next) => {
       });
     }
 
-    // Check for user and include password for validation
     const user = await User.findOne({ email: email.toLowerCase() }).select('+password');
 
     if (!user) {
@@ -108,9 +100,6 @@ export const login = async (req, res, next) => {
   }
 };
 
-// @desc    Get current logged in user
-// @route   GET /api/auth/me
-// @access  Private
 export const getMe = async (req, res, next) => {
   try {
     const user = await User.findById(req.user._id);
@@ -130,9 +119,6 @@ export const getMe = async (req, res, next) => {
   }
 };
 
-// @desc    Update user profile
-// @route   PUT /api/auth/profile
-// @access  Private
 export const updateProfile = async (req, res, next) => {
   try {
     const { name, phone, gender, dob, bloodGroup, address, avatar } = req.body;
@@ -152,7 +138,6 @@ export const updateProfile = async (req, res, next) => {
 
     await user.save();
 
-    // If user is a doctor, keep doctor's name, phone & avatar in sync
     if (user.role === 'doctor') {
       await Doctor.findOneAndUpdate(
         { userId: user._id },
@@ -174,9 +159,6 @@ export const updateProfile = async (req, res, next) => {
   }
 };
 
-// @desc    Change password
-// @route   PUT /api/auth/change-password
-// @access  Private
 export const changePassword = async (req, res, next) => {
   try {
     const { currentPassword, newPassword } = req.body;

@@ -7,7 +7,6 @@ const api = axios.create({
   },
 });
 
-// Request Interceptor: Attach JWT Token
 api.interceptors.request.use(
   (config) => {
     const token = localStorage.getItem('medislot_token');
@@ -19,11 +18,9 @@ api.interceptors.request.use(
   (error) => Promise.reject(error)
 );
 
-// Response Interceptor: Friendly error handling
 api.interceptors.response.use(
   (response) => response,
   (error) => {
-    // If token expired, clear and trigger custom event
     if (error.response && error.response.status === 401) {
       const isLoginRequest = error.config.url.includes('/auth/login');
       if (!isLoginRequest) {

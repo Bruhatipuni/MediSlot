@@ -6,7 +6,6 @@ import { fileURLToPath } from 'url';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-// Upload destination for reports (private, non-public storage)
 const reportsDir = path.join(__dirname, '../../uploads/reports');
 if (!fs.existsSync(reportsDir)) {
   fs.mkdirSync(reportsDir, { recursive: true });
@@ -27,7 +26,6 @@ const storage = multer.diskStorage({
 });
 
 const fileFilter = (req, file, cb) => {
-  // Only accept PDF files
   const allowedMime = ['application/pdf'];
   const allowedExt = ['.pdf'];
   const ext = path.extname(file.originalname).toLowerCase();

@@ -85,7 +85,6 @@ const PatientProfile = () => {
 
   return (
     <div className="max-w-4xl mx-auto space-y-6">
-      {/* Header */}
       <div className="bg-white rounded-3xl p-6 sm:p-8 border border-slate-200/80 shadow-soft flex items-center gap-4">
         <img
           src={user?.avatar || `https://api.dicebear.com/7.x/personas/svg?seed=${encodeURIComponent(user?.name || 'User')}`}
@@ -102,7 +101,6 @@ const PatientProfile = () => {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        {/* Personal Details Form */}
         <div className="bg-white rounded-3xl p-6 border border-slate-200/80 shadow-soft">
           <h3 className="text-base font-bold text-slate-800 mb-4 flex items-center gap-2">
             <User className="w-5 h-5 text-brand-600" />
@@ -215,7 +213,6 @@ const PatientProfile = () => {
           </form>
         </div>
 
-        {/* Change Password Form */}
         <div className="bg-white rounded-3xl p-6 border border-slate-200/80 shadow-soft">
           <h3 className="text-base font-bold text-slate-800 mb-4 flex items-center gap-2">
             <Lock className="w-5 h-5 text-brand-600" />

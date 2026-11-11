@@ -97,12 +97,10 @@ describe('MediSlot Backend API Tests', () => {
   });
 
   test('7. Slot availability endpoint calculates working slots', async () => {
-    // Fetch doctor Rajesh
     const docRes = await fetch(`${baseUrl}/api/doctors?search=Rajesh`);
     const docData = await docRes.json();
     const docId = docData.doctors[0]._id;
 
-    // Check tomorrow's slots
     const tomorrowStr = new Date(Date.now() + 86400000).toISOString().slice(0, 10);
     const slotRes = await fetch(`${baseUrl}/api/appointments/slots/${docId}?date=${tomorrowStr}`);
     assert.strictEqual(slotRes.status, 200);

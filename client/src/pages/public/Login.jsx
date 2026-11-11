@@ -58,7 +58,6 @@ const Login = () => {
   return (
     <div className="min-h-[calc(100vh-12rem)] flex items-center justify-center p-4 sm:p-6">
       <div className="w-full max-w-sm space-y-6">
-        {/* Header */}
         <div className="text-center space-y-1.5">
           <div className="w-10 h-10 rounded-xl bg-brand-600 text-white flex items-center justify-center mx-auto mb-3 shadow-xs">
             <Activity className="w-5 h-5" />
@@ -71,7 +70,6 @@ const Login = () => {
           </p>
         </div>
 
-        {/* Card */}
         <div className="bg-white p-6 sm:p-7 rounded-2xl border border-slate-200 shadow-sm space-y-5">
           <form onSubmit={handleSubmit} noValidate className="space-y-4">
             <FormField
@@ -111,7 +109,6 @@ const Login = () => {
             </button>
           </form>
 
-          {/* Discreet demo credentials row */}
           <div className="pt-3 border-t border-slate-100 text-center">
             <p className="text-[11px] text-slate-400 mb-2">Demo 1-Click Access:</p>
             <div className="flex items-center justify-center gap-1.5 text-xs">
@@ -142,7 +139,6 @@ const Login = () => {
           </div>
         </div>
 
-        {/* Footer Link */}
         <p className="text-center text-xs text-slate-500">
           Don't have an account?{' '}
           <Link to="/register" className="font-semibold text-brand-600 hover:underline">

@@ -65,7 +65,6 @@ const Home = () => {
 
   return (
     <div className="space-y-16 pb-16">
-      {/* Hero Section */}
       <section className="bg-gradient-to-b from-slate-50 to-white pt-16 pb-14 border-b border-slate-200/80">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 text-center space-y-6">
           <div className="space-y-3">
@@ -77,7 +76,6 @@ const Home = () => {
             </p>
           </div>
 
-          {/* Clean Search Form */}
           <form
             onSubmit={handleSearchSubmit}
             className="bg-white p-2 sm:p-2.5 rounded-2xl shadow-sm border border-slate-200 flex flex-col sm:flex-row items-center gap-2 max-w-2xl mx-auto"
@@ -120,7 +118,6 @@ const Home = () => {
             </button>
           </form>
 
-          {/* Highlights */}
           <div className="pt-2 flex flex-wrap items-center justify-center gap-6 text-xs text-slate-500 font-medium">
             <span className="flex items-center gap-1.5">
               <CheckCircle2 className="w-4 h-4 text-emerald-600" />
@@ -138,7 +135,6 @@ const Home = () => {
         </div>
       </section>
 
-      {/* Specialty Grid */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between mb-6">
           <div>
@@ -182,7 +178,6 @@ const Home = () => {
         </div>
       </section>
 
-      {/* Featured Doctors */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between mb-6">
           <div>
@@ -217,7 +212,6 @@ const Home = () => {
         )}
       </section>
 
-      {/* How it Works - 3 Clean Steps */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="bg-slate-50 rounded-2xl p-6 sm:p-8 border border-slate-200">
           <div className="max-w-xl mx-auto text-center mb-8">
@@ -263,7 +257,6 @@ const Home = () => {
         </div>
       </section>
 
-      {/* Reception Board CTA */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="bg-white rounded-2xl p-6 border border-slate-200 flex flex-col sm:flex-row items-center justify-between gap-4">
           <div className="flex items-center gap-3.5">

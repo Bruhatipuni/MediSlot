@@ -103,7 +103,6 @@ const DoctorDashboard = () => {
 
   return (
     <div className="space-y-6">
-      {/* Clean Welcome Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-2 border-b border-slate-200">
         <div>
           <h1 className="text-xl sm:text-2xl font-bold text-slate-900 tracking-tight">
@@ -132,7 +131,6 @@ const DoctorDashboard = () => {
         </div>
       </div>
 
-      {/* Metrics Row */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
         <div className="bg-white p-4 rounded-xl border border-slate-200">
           <p className="text-xs text-slate-500">Today's Patients</p>
@@ -167,9 +165,7 @@ const DoctorDashboard = () => {
         </div>
       </div>
 
-      {/* Main Grid: Queue Controller & Appointments */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
-        {/* Left Column (5 cols): Quick Queue Control */}
         <div className="lg:col-span-5 bg-white rounded-2xl p-5 border border-slate-200 space-y-4">
           <div className="flex items-center justify-between pb-2 border-b border-slate-100">
             <h3 className="text-sm font-bold text-slate-900">Current Consultation</h3>
@@ -231,7 +227,6 @@ const DoctorDashboard = () => {
             </div>
           )}
 
-          {/* Next in line */}
           <div className="pt-2 text-xs">
             <span className="text-slate-400 font-semibold uppercase text-[10px] block mb-1.5">Next Patient:</span>
             {queueSummary?.nextPatient ? (
@@ -247,7 +242,6 @@ const DoctorDashboard = () => {
           </div>
         </div>
 
-        {/* Right Column (7 cols): Today's Schedule Table */}
         <div className="lg:col-span-7 bg-white rounded-2xl p-5 border border-slate-200 space-y-3">
           <div className="flex items-center justify-between pb-2 border-b border-slate-100">
             <h3 className="text-sm font-bold text-slate-900">Today's Schedule</h3>

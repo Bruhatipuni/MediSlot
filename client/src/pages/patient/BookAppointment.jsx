@@ -26,7 +26,6 @@ const BookAppointment = () => {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
 
-  // Generate 7 upcoming day chips
   const generateUpcomingDays = () => {
     const days = [];
     for (let i = 0; i < 7; i++) {
@@ -56,7 +55,6 @@ const BookAppointment = () => {
   const [loadingSlots, setLoadingSlots] = useState(false);
   const [submitting, setSubmitting] = useState(false);
 
-  // Fetch Doctor profile
   useEffect(() => {
     const fetchDoc = async () => {
       try {
@@ -74,7 +72,6 @@ const BookAppointment = () => {
     fetchDoc();
   }, [doctorId, navigate]);
 
-  // Fetch slots for selected date
   useEffect(() => {
     const fetchSlots = async () => {
       if (!doctorId || !selectedDate) return;
@@ -83,7 +80,6 @@ const BookAppointment = () => {
         const { data } = await api.get(`/appointments/slots/${doctorId}?date=${selectedDate}`);
         if (data.success) {
           setSlotsData(data);
-          // If initialSlot is in the slots and not booked, keep it; otherwise reset
           if (selectedSlot) {
             const match = data.slots?.find((s) => s.time === selectedSlot);
             if (!match || match.isBooked) {
@@ -147,7 +143,6 @@ const BookAppointment = () => {
 
   if (!doctor) return null;
 
-  // Split slots into morning and afternoon/evening
   const morningSlots = (slotsData?.slots || []).filter((slot) => {
     const hour = parseInt(slot.time.split(':')[0], 10);
     return hour < 12;
@@ -160,7 +155,6 @@ const BookAppointment = () => {
 
   return (
     <div className="max-w-5xl mx-auto space-y-6 animate-fadeIn">
-      {/* Breadcrumb Navigation */}
       <nav className="flex items-center gap-2 text-xs font-semibold text-slate-500">
         <Link to="/patient/dashboard" className="hover:text-brand-600 transition-colors">Portal</Link>
         <ChevronRight className="w-3.5 h-3.5 text-slate-400" />
@@ -169,7 +163,6 @@ const BookAppointment = () => {
         <span className="text-slate-800 font-bold">Book with {doctor.name}</span>
       </nav>
 
-      {/* Header */}
       <div>
         <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-brand-50 text-brand-700 text-xs font-bold border border-brand-200 mb-2">
           <Calendar className="w-3.5 h-3.5" />
@@ -184,7 +177,6 @@ const BookAppointment = () => {
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-        {/* Left Column (5 cols): Doctor Info Preview Card */}
         <div className="lg:col-span-5 bg-white rounded-3xl p-6 border border-slate-200/80 shadow-soft space-y-5">
           <div className="flex items-center gap-4 pb-4 border-b border-slate-100">
             <img
@@ -232,10 +224,8 @@ const BookAppointment = () => {
           </div>
         </div>
 
-        {/* Right Column (7 cols): Booking Form */}
         <div className="lg:col-span-7 bg-white rounded-3xl p-6 sm:p-8 border border-slate-200/80 shadow-soft">
           <form onSubmit={handleSubmitBooking} className="space-y-5">
-            {/* 1. Date Selection with Quick Carousel */}
             <div>
               <div className="flex items-center justify-between mb-2">
                 <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider">
@@ -250,7 +240,6 @@ const BookAppointment = () => {
                 />
               </div>
 
-              {/* 4 quick day selector pills */}
               <div className="grid grid-cols-4 gap-2 mb-3">
                 {upcomingDays.slice(0, 4).map((d) => {
                   const isSelected = selectedDate === d.iso;
@@ -275,7 +264,6 @@ const BookAppointment = () => {
               </div>
             </div>
 
-            {/* 2. Slot Selection */}
             <div>
               <div className="flex items-center justify-between mb-2">
                 <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider">
@@ -300,7 +288,6 @@ const BookAppointment = () => {
                 </div>
               ) : slotsData && slotsData.slots?.length > 0 ? (
                 <div className="space-y-3 max-h-56 overflow-y-auto p-2 bg-slate-50/50 rounded-2xl border border-slate-100">
-                  {/* Morning Slots */}
                   {morningSlots.length > 0 && (
                     <div>
                       <p className="text-[11px] font-bold text-slate-600 mb-1.5 flex items-center gap-1">
@@ -329,7 +316,6 @@ const BookAppointment = () => {
                     </div>
                   )}
 
-                  {/* Afternoon Slots */}
                   {afternoonSlots.length > 0 && (
                     <div className="pt-2 border-t border-slate-200/60">
                       <p className="text-[11px] font-bold text-slate-600 mb-1.5 flex items-center gap-1">
@@ -363,7 +349,6 @@ const BookAppointment = () => {
               )}
             </div>
 
-            {/* 3. Reason for Visit */}
             <div>
               <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
                 3. Reason for Consultation / Symptoms *
@@ -378,7 +363,6 @@ const BookAppointment = () => {
               />
             </div>
 
-            {/* Submit Action */}
             <div className="pt-2">
               <button
                 type="submit"

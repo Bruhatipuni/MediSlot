@@ -19,7 +19,6 @@ export const createPdfReport = (filename, title, patientName, doctorName, date, 
 
     doc.pipe(writeStream);
 
-    // Header styling
     doc
       .rect(0, 0, doc.page.width, 100)
       .fill('#0284c7');
@@ -31,7 +30,6 @@ export const createPdfReport = (filename, title, patientName, doctorName, date, 
       .fontSize(11)
       .text('Official Clinical Diagnostic & Consultation Summary', 50, 60);
 
-    // Metadata box
     doc
       .rect(50, 120, doc.page.width - 100, 100)
       .strokeColor('#e2e8f0')
@@ -48,7 +46,6 @@ export const createPdfReport = (filename, title, patientName, doctorName, date, 
       .text(`Status: Verified & Signed`, 350, 155)
       .text(`Facility: MediSlot Specialty Center`, 350, 175);
 
-    // Report Content
     doc
       .fontSize(14)
       .fillColor('#0284c7')
@@ -68,7 +65,6 @@ export const createPdfReport = (filename, title, patientName, doctorName, date, 
         lineGap: 4,
       });
 
-    // Laboratory Values / Test Table
     if (details.parameters && details.parameters.length > 0) {
       doc
         .fontSize(13)
@@ -88,7 +84,6 @@ export const createPdfReport = (filename, title, patientName, doctorName, date, 
       });
     }
 
-    // Prescription / Advice
     doc
       .fontSize(13)
       .fillColor('#0284c7')
@@ -102,7 +97,6 @@ export const createPdfReport = (filename, title, patientName, doctorName, date, 
         lineGap: 4,
       });
 
-    // Footer
     doc
       .fontSize(9)
       .fillColor('#94a3b8')

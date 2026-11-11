@@ -20,7 +20,6 @@ const AdminAppointments = () => {
   const [doctors, setDoctors] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  // Filters
   const [status, setStatus] = useState('All');
   const [date, setDate] = useState('');
   const [doctorId, setDoctorId] = useState('All');
@@ -77,7 +76,6 @@ const AdminAppointments = () => {
 
   return (
     <div className="space-y-6">
-      {/* Header */}
       <div className="bg-white rounded-3xl p-6 sm:p-8 border border-slate-200/80 shadow-soft">
         <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900">
           Clinic Master Appointment Ledger
@@ -86,7 +84,6 @@ const AdminAppointments = () => {
           Monitor all scheduled, active, and completed consultation bookings across the healthcare network.
         </p>
 
-        {/* Filter Bar */}
         <div className="mt-6 pt-6 border-t border-slate-100 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
           <form onSubmit={handleSearchSubmit} className="relative">
             <Search className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
@@ -154,7 +151,6 @@ const AdminAppointments = () => {
         </div>
       </div>
 
-      {/* Appointments Table */}
       {loading ? (
         <TableSkeleton rows={8} />
       ) : appointments.length > 0 ? (
@@ -223,7 +219,6 @@ const AdminAppointments = () => {
         />
       )}
 
-      {/* Pagination */}
       {totalPages > 1 && (
         <div className="flex items-center justify-center gap-3 pt-4">
           <button

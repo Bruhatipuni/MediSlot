@@ -62,7 +62,6 @@ const Sidebar = () => {
   return (
     <aside className="w-60 bg-white border-r border-slate-200 min-h-[calc(100vh-4rem)] flex flex-col justify-between p-3.5 flex-shrink-0">
       <div>
-        {/* Role Header */}
         <div className="mb-4 px-3 py-2 rounded-xl bg-slate-50 border border-slate-100 flex items-center justify-between">
           <div>
             <p className="text-[10px] font-bold uppercase tracking-wider text-slate-400">Portal</p>
@@ -71,7 +70,6 @@ const Sidebar = () => {
           <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
         </div>
 
-        {/* Navigation Links */}
         <nav className="space-y-0.5">
           {navItems.map((item) => {
             const Icon = item.icon;
@@ -99,7 +97,6 @@ const Sidebar = () => {
         </nav>
       </div>
 
-      {/* User Info & Logout */}
       <div className="pt-3 border-t border-slate-100 space-y-1">
         <div className="flex items-center gap-2.5 px-2.5 py-2">
           <img

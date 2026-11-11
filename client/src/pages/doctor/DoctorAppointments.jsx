@@ -24,7 +24,6 @@ const DoctorAppointments = () => {
   const [search, setSearch] = useState('');
   const [selectedDate, setSelectedDate] = useState('');
 
-  // Consultation Notes Edit Modal
   const [modalOpen, setModalOpen] = useState(false);
   const [selectedAppointment, setSelectedAppointment] = useState(null);
   const [diagnosis, setDiagnosis] = useState('');
@@ -80,7 +79,7 @@ const DoctorAppointments = () => {
         consultationNotes,
         prescription,
         vitals,
-        status: 'completed', // Doctor saving clinical notes marks it complete
+        status: 'completed',
       });
 
       if (data.success) {
@@ -97,7 +96,6 @@ const DoctorAppointments = () => {
 
   return (
     <div className="space-y-6">
-      {/* Header */}
       <div className="bg-white rounded-3xl p-6 sm:p-8 border border-slate-200/80 shadow-soft flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
           <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900">
@@ -108,7 +106,6 @@ const DoctorAppointments = () => {
           </p>
         </div>
 
-        {/* Filter Controls */}
         <div className="flex flex-wrap items-center gap-3">
           <input
             type="date"
@@ -127,7 +124,6 @@ const DoctorAppointments = () => {
         </div>
       </div>
 
-      {/* Search and Tabs */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-200 pb-3">
         <div className="flex flex-wrap gap-2">
           {['All', 'scheduled', 'in-consultation', 'completed', 'cancelled', 'skipped'].map((tab) => (
@@ -157,7 +153,6 @@ const DoctorAppointments = () => {
         </form>
       </div>
 
-      {/* Appointments List */}
       {loading ? (
         <TableSkeleton rows={5} />
       ) : appointments.length > 0 ? (
@@ -204,7 +199,6 @@ const DoctorAppointments = () => {
                 </div>
               </div>
 
-              {/* Action Buttons */}
               <div className="flex items-center gap-2 self-end md:self-center">
                 <button
                   onClick={() => handleOpenConsultationModal(apt)}
@@ -225,7 +219,6 @@ const DoctorAppointments = () => {
         />
       )}
 
-      {/* Consultation Notes Modal */}
       <Modal
         isOpen={modalOpen}
         onClose={() => setModalOpen(false)}
@@ -233,7 +226,6 @@ const DoctorAppointments = () => {
         maxWidth="max-w-2xl"
       >
         <form onSubmit={handleSaveConsultation} className="space-y-4 text-xs">
-          {/* Patient summary */}
           <div className="p-3 bg-slate-50 rounded-xl border border-slate-100 flex items-center justify-between">
             <div>
               <p className="font-bold text-slate-800 text-sm">{selectedAppointment?.patientId?.name}</p>
@@ -244,7 +236,6 @@ const DoctorAppointments = () => {
             </span>
           </div>
 
-          {/* Vitals */}
           <div>
             <label className="block font-bold text-slate-700 uppercase tracking-wider mb-1.5">
               Patient Vitals

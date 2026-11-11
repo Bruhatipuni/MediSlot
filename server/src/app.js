@@ -11,7 +11,6 @@ import { errorHandler } from './middleware/errorMiddleware.js';
 
 const app = express();
 
-// Middlewares
 app.use(
   cors({
     origin: process.env.CLIENT_URL || 'http://localhost:5173',
@@ -25,7 +24,6 @@ if (process.env.NODE_ENV !== 'test') {
   app.use(morgan('dev'));
 }
 
-// Health check endpoint
 app.get('/api/health', (req, res) => {
   res.status(200).json({
     status: 'online',
@@ -35,7 +33,6 @@ app.get('/api/health', (req, res) => {
   });
 });
 
-// Mount Routes
 app.use('/api/auth', authRoutes);
 app.use('/api/doctors', doctorRoutes);
 app.use('/api/appointments', appointmentRoutes);
@@ -43,7 +40,6 @@ app.use('/api/queue', queueRoutes);
 app.use('/api/reports', reportRoutes);
 app.use('/api/admin', adminRoutes);
 
-// 404 Route Handler
 app.use('*', (req, res) => {
   res.status(404).json({
     success: false,
@@ -51,7 +47,6 @@ app.use('*', (req, res) => {
   });
 });
 
-// Centralized Error Handling Middleware
 app.use(errorHandler);
 
 export default app;

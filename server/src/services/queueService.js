@@ -2,9 +2,6 @@ import Queue from '../models/Queue.js';
 import Appointment from '../models/Appointment.js';
 import Doctor from '../models/Doctor.js';
 
-/**
- * Get or create the Queue record for a doctor on a specific date
- */
 export const getOrCreateDailyQueue = async (doctorId, dateStr) => {
   let queue = await Queue.findOne({ doctorId, date: dateStr });
 
@@ -22,10 +19,6 @@ export const getOrCreateDailyQueue = async (doctorId, dateStr) => {
   return queue;
 };
 
-/**
- * Allocate next token number for a doctor on a specific date
- * Returns { tokenNumber, queue }
- */
 export const issueTokenForAppointment = async ({
   doctorId,
   dateStr,
@@ -34,7 +27,6 @@ export const issueTokenForAppointment = async ({
   patientName,
   timeSlot,
 }) => {
-  // Use atomic findOneAndUpdate or fetch & push
   let queue = await getOrCreateDailyQueue(doctorId, dateStr);
 
   const nextTokenNumber = queue.totalTokensIssued + 1;
@@ -57,9 +49,6 @@ export const issueTokenForAppointment = async ({
   };
 };
 
-/**
- * Mark token as cancelled when appointment is cancelled
- */
 export const removeOrCancelToken = async (doctorId, dateStr, appointmentId) => {
   const queue = await Queue.findOne({ doctorId, date: dateStr });
   if (!queue) return null;
@@ -76,14 +65,9 @@ export const removeOrCancelToken = async (doctorId, dateStr, appointmentId) => {
   return queue;
 };
 
-/**
- * Doctor calls the next patient in waiting queue
- */
 export const callNextPatientInQueue = async (doctorId, dateStr) => {
   const queue = await getOrCreateDailyQueue(doctorId, dateStr);
 
-  // If there's an ongoing consultation, we can check or mark as finished, but doctor can call next
-  // Find next patient in waiting status
   const nextToken = queue.activeTokens.find((t) => t.status === 'waiting');
 
   if (!nextToken) {
@@ -101,7 +85,6 @@ export const callNextPatientInQueue = async (doctorId, dateStr) => {
 
   await queue.save();
 
-  // Update appointment status to in-consultation
   await Appointment.findByIdAndUpdate(nextToken.appointmentId, {
     status: 'in-consultation',
   });
@@ -114,9 +97,6 @@ export const callNextPatientInQueue = async (doctorId, dateStr) => {
   };
 };
 
-/**
- * Doctor skips the current or specified token
- */
 export const skipPatientToken = async (doctorId, dateStr, tokenNumber) => {
   const queue = await getOrCreateDailyQueue(doctorId, dateStr);
 
@@ -143,9 +123,6 @@ export const skipPatientToken = async (doctorId, dateStr, tokenNumber) => {
   };
 };
 
-/**
- * Doctor marks consultation complete and saves notes
- */
 export const completePatientConsultation = async ({
   doctorId,
   dateStr,
@@ -166,7 +143,6 @@ export const completePatientConsultation = async ({
   tokenEntry.status = 'completed';
   tokenEntry.completedAt = new Date();
 
-  // Check if all tokens are processed
   const remainingWaiting = queue.activeTokens.filter((t) => t.status === 'waiting' || t.status === 'called');
   if (remainingWaiting.length === 0) {
     queue.status = 'completed';
@@ -174,7 +150,6 @@ export const completePatientConsultation = async ({
 
   await queue.save();
 
-  // Update appointment
   const updatedAppointment = await Appointment.findByIdAndUpdate(
     tokenEntry.appointmentId,
     {
@@ -195,9 +170,6 @@ export const completePatientConsultation = async ({
   };
 };
 
-/**
- * Calculate full queue summary for live display / dashboard
- */
 export const getQueueSummary = async (doctorId, dateStr) => {
   const doctor = await Doctor.findById(doctorId).select('name specialization avatar consultationFee clinicAddress slotDurationMinutes isAvailable');
   if (!doctor) {

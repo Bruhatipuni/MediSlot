@@ -27,13 +27,11 @@ const PatientAppointments = () => {
   const [loading, setLoading] = useState(true);
   const [statusFilter, setStatusFilter] = useState('All');
 
-  // Cancel Modal State
   const [cancelModalOpen, setCancelModalOpen] = useState(false);
   const [selectedAppointment, setSelectedAppointment] = useState(null);
   const [cancelReason, setCancelReason] = useState('');
   const [cancelling, setCancelling] = useState(false);
 
-  // Reschedule Modal State
   const [rescheduleModalOpen, setRescheduleModalOpen] = useState(false);
   const [newDate, setNewDate] = useState('');
   const [newSlot, setNewSlot] = useState('');
@@ -41,7 +39,6 @@ const PatientAppointments = () => {
   const [loadingSlots, setLoadingSlots] = useState(false);
   const [rescheduling, setRescheduling] = useState(false);
 
-  // Details Modal State
   const [detailsModalOpen, setDetailsModalOpen] = useState(false);
   const [viewAppointment, setViewAppointment] = useState(null);
 
@@ -64,7 +61,6 @@ const PatientAppointments = () => {
     fetchAppointments();
   }, [statusFilter]);
 
-  // Handle Cancel
   const handleOpenCancel = (apt) => {
     setSelectedAppointment(apt);
     setCancelReason('');
@@ -90,7 +86,6 @@ const PatientAppointments = () => {
     }
   };
 
-  // Handle Reschedule
   const handleOpenReschedule = (apt) => {
     setSelectedAppointment(apt);
     const tomorrow = new Date(Date.now() + 86400000).toISOString().slice(0, 10);
@@ -146,7 +141,6 @@ const PatientAppointments = () => {
 
   return (
     <div className="space-y-6">
-      {/* Top Header */}
       <div className="bg-white rounded-3xl p-6 sm:p-8 border border-slate-200/80 shadow-soft flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
           <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900">My Appointments</h1>
@@ -164,7 +158,6 @@ const PatientAppointments = () => {
         </Link>
       </div>
 
-      {/* Status Filter Tabs */}
       <div className="flex flex-wrap items-center gap-2 border-b border-slate-200 pb-3">
         {['All', 'scheduled', 'completed', 'cancelled'].map((tab) => (
           <button
@@ -181,7 +174,6 @@ const PatientAppointments = () => {
         ))}
       </div>
 
-      {/* Appointments List */}
       {loading ? (
         <TableSkeleton rows={5} />
       ) : appointments.length > 0 ? (
@@ -194,7 +186,6 @@ const PatientAppointments = () => {
                 key={apt._id}
                 className="bg-white rounded-2xl p-5 border border-slate-200/80 shadow-soft hover:shadow-card transition-all flex flex-col md:flex-row items-start md:items-center justify-between gap-4"
               >
-                {/* Doctor & Date Info */}
                 <div className="flex items-start gap-4 min-w-0">
                   <img
                     src={apt.doctorId?.avatar || `https://api.dicebear.com/7.x/personas/svg?seed=${encodeURIComponent(apt.doctorId?.name || 'Doctor')}`}
@@ -240,7 +231,6 @@ const PatientAppointments = () => {
                   </div>
                 </div>
 
-                {/* Actions */}
                 <div className="flex flex-wrap items-center gap-2 self-end md:self-center">
                   <button
                     onClick={() => {
@@ -287,7 +277,6 @@ const PatientAppointments = () => {
         />
       )}
 
-      {/* Cancel Modal */}
       <Modal
         isOpen={cancelModalOpen}
         onClose={() => setCancelModalOpen(false)}
@@ -332,7 +321,6 @@ const PatientAppointments = () => {
         </div>
       </Modal>
 
-      {/* Reschedule Modal */}
       <Modal
         isOpen={rescheduleModalOpen}
         onClose={() => setRescheduleModalOpen(false)}
@@ -406,7 +394,6 @@ const PatientAppointments = () => {
         </div>
       </Modal>
 
-      {/* Appointment Details & Consultation Notes Modal */}
       <Modal
         isOpen={detailsModalOpen}
         onClose={() => setDetailsModalOpen(false)}
@@ -444,7 +431,6 @@ const PatientAppointments = () => {
               </div>
             </div>
 
-            {/* Reason */}
             <div>
               <p className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-1">
                 Reason for Visit
@@ -454,7 +440,6 @@ const PatientAppointments = () => {
               </p>
             </div>
 
-            {/* Clinical Notes (If completed) */}
             {viewAppointment.diagnosis && (
               <div>
                 <p className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-1">

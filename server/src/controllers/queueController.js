@@ -9,9 +9,6 @@ import {
   getOrCreateDailyQueue,
 } from '../services/queueService.js';
 
-// @desc    Get queue summary for a doctor on a specific date (Defaults to today)
-// @route   GET /api/queue/:doctorId
-// @access  Public (Used by doctor, patient, reception TV)
 export const getDoctorQueue = async (req, res, next) => {
   try {
     const { doctorId } = req.params;
@@ -35,9 +32,6 @@ export const getDoctorQueue = async (req, res, next) => {
   }
 };
 
-// @desc    Doctor calls next patient in queue
-// @route   POST /api/queue/call-next
-// @access  Private (Doctor)
 export const callNextPatient = async (req, res, next) => {
   try {
     const doctor = await Doctor.findOne({ userId: req.user._id });
@@ -66,9 +60,6 @@ export const callNextPatient = async (req, res, next) => {
   }
 };
 
-// @desc    Doctor skips a token in queue
-// @route   POST /api/queue/skip
-// @access  Private (Doctor)
 export const skipToken = async (req, res, next) => {
   try {
     const doctor = await Doctor.findOne({ userId: req.user._id });
@@ -100,9 +91,6 @@ export const skipToken = async (req, res, next) => {
   }
 };
 
-// @desc    Doctor completes consultation for token
-// @route   POST /api/queue/complete
-// @access  Private (Doctor)
 export const completeConsultation = async (req, res, next) => {
   try {
     const doctor = await Doctor.findOne({ userId: req.user._id });
@@ -143,14 +131,10 @@ export const completeConsultation = async (req, res, next) => {
   }
 };
 
-// @desc    Get patient's active token & position in queue
-// @route   GET /api/queue/my-token-status
-// @access  Private (Patient)
 export const getPatientTokenStatus = async (req, res, next) => {
   try {
     const todayStr = new Date().toISOString().slice(0, 10);
 
-    // Find patient's appointment for today (or upcoming)
     const appointments = await Appointment.find({
       patientId: req.user._id,
       status: { $in: ['scheduled', 'in-queue', 'in-consultation'] },
@@ -167,7 +151,6 @@ export const getPatientTokenStatus = async (req, res, next) => {
       let waitingAhead = 0;
 
       if (queue) {
-        // Count tokens before this patient that are still waiting
         waitingAhead = queue.activeTokens.filter(
           (t) => t.status === 'waiting' && t.tokenNumber < apt.tokenNumber
         ).length;
@@ -198,9 +181,6 @@ export const getPatientTokenStatus = async (req, res, next) => {
   }
 };
 
-// @desc    Get all clinic active queues (for clinic reception lobby TV / admin)
-// @route   GET /api/queue/all/live
-// @access  Public
 export const getClinicLiveQueues = async (req, res, next) => {
   try {
     const todayStr = req.query.date || new Date().toISOString().slice(0, 10);

@@ -39,7 +39,6 @@ const Navbar = () => {
     <header className="sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b border-slate-200 transition-colors">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
-          {/* Brand Logo */}
           <Link to="/" className="flex items-center gap-2.5">
             <div className="w-9 h-9 rounded-xl bg-brand-600 flex items-center justify-center text-white shadow-xs">
               <Activity className="w-5 h-5" />
@@ -49,7 +48,6 @@ const Navbar = () => {
             </span>
           </Link>
 
-          {/* Clean Navigation Links */}
           <nav className="hidden md:flex items-center gap-6 text-sm font-medium">
             <Link
               to="/"
@@ -78,7 +76,6 @@ const Navbar = () => {
             </Link>
           </nav>
 
-          {/* User Auth Actions */}
           <div className="hidden md:flex items-center gap-3">
             {isAuthenticated ? (
               <div className="relative">
@@ -98,7 +95,6 @@ const Navbar = () => {
                   <ChevronDown className="w-3.5 h-3.5 text-slate-400" />
                 </button>
 
-                {/* Dropdown Menu */}
                 {dropdownOpen && (
                   <div
                     onMouseLeave={() => setDropdownOpen(false)}
@@ -194,7 +190,6 @@ const Navbar = () => {
             )}
           </div>
 
-          {/* Mobile menu toggle */}
           <div className="flex md:hidden items-center">
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
@@ -206,7 +201,6 @@ const Navbar = () => {
         </div>
       </div>
 
-      {/* Mobile Drawer */}
       {mobileMenuOpen && (
         <div className="md:hidden border-t border-slate-200 bg-white px-4 py-4 space-y-2">
           <Link

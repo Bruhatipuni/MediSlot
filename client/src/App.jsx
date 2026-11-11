@@ -3,19 +3,9 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { Toaster } from 'react-hot-toast';
 import { AuthProvider } from './contexts/AuthContext';
 
-// Layouts
 import PublicLayout from './components/layouts/PublicLayout';
 import DashboardLayout from './components/layouts/DashboardLayout';
 
-/**
- * ============================================================================
- * UNIT V: Route-Based Code Splitting via React.lazy & Suspense
- * ============================================================================
- * Demonstrates:
- * - Production bundle optimization via dynamic ECMAScript import()
- * - Suspense boundary with declarative fallback skeleton
- * - Decreasing initial bundle size by loading page chunks on demand
- */
 const PageLoader = () => (
   <div className="min-h-[50vh] flex flex-col items-center justify-center p-8 space-y-3">
     <div className="w-10 h-10 border-4 border-brand-200 border-t-brand-600 rounded-full animate-spin" />
@@ -25,7 +15,6 @@ const PageLoader = () => (
   </div>
 );
 
-// Public Pages (Lazy Loaded)
 const Home = lazy(() => import('./pages/public/Home'));
 const Doctors = lazy(() => import('./pages/public/Doctors'));
 const DoctorDetails = lazy(() => import('./pages/public/DoctorDetails'));
@@ -35,7 +24,6 @@ const QueueDisplay = lazy(() => import('./pages/public/QueueDisplay'));
 const Unauthorized = lazy(() => import('./pages/public/Unauthorized'));
 const NotFound = lazy(() => import('./pages/public/NotFound'));
 
-// Patient Pages (Lazy Loaded)
 const PatientDashboard = lazy(() => import('./pages/patient/PatientDashboard'));
 const PatientAppointments = lazy(() => import('./pages/patient/PatientAppointments'));
 const BookAppointment = lazy(() => import('./pages/patient/BookAppointment'));
@@ -44,7 +32,6 @@ const PatientTokens = lazy(() => import('./pages/patient/PatientTokens'));
 const PatientReports = lazy(() => import('./pages/patient/PatientReports'));
 const PatientProfile = lazy(() => import('./pages/patient/PatientProfile'));
 
-// Doctor Pages (Lazy Loaded)
 const DoctorDashboard = lazy(() => import('./pages/doctor/DoctorDashboard'));
 const DoctorAppointments = lazy(() => import('./pages/doctor/DoctorAppointments'));
 const DoctorQueue = lazy(() => import('./pages/doctor/DoctorQueue'));
@@ -53,7 +40,6 @@ const DoctorPatients = lazy(() => import('./pages/doctor/DoctorPatients'));
 const DoctorReports = lazy(() => import('./pages/doctor/DoctorReports'));
 const DoctorProfile = lazy(() => import('./pages/doctor/DoctorProfile'));
 
-// Admin Pages (Lazy Loaded)
 const AdminDashboard = lazy(() => import('./pages/admin/AdminDashboard'));
 const AdminDoctors = lazy(() => import('./pages/admin/AdminDoctors'));
 const AdminPatients = lazy(() => import('./pages/admin/AdminPatients'));
@@ -94,7 +80,6 @@ function App() {
 
         <Suspense fallback={<PageLoader />}>
           <Routes>
-            {/* Public Layout Routes with Shared Header & Footer */}
             <Route element={<PublicLayout />}>
               <Route path="/" element={<Home />} />
               <Route path="/doctors" element={<Doctors />} />
@@ -105,10 +90,8 @@ function App() {
               <Route path="*" element={<NotFound />} />
             </Route>
 
-            {/* Standalone Outpatient Reception TV Display Mode */}
             <Route path="/queue-display" element={<QueueDisplay />} />
 
-            {/* Patient Role-Protected Routes */}
             <Route element={<DashboardLayout allowedRoles={['patient']} />}>
               <Route path="/patient/dashboard" element={<PatientDashboard />} />
               <Route path="/patient/appointments" element={<PatientAppointments />} />
@@ -119,7 +102,6 @@ function App() {
               <Route path="/patient/profile" element={<PatientProfile />} />
             </Route>
 
-            {/* Doctor Role-Protected Routes */}
             <Route element={<DashboardLayout allowedRoles={['doctor']} />}>
               <Route path="/doctor/dashboard" element={<DoctorDashboard />} />
               <Route path="/doctor/appointments" element={<DoctorAppointments />} />
@@ -130,7 +112,6 @@ function App() {
               <Route path="/doctor/profile" element={<DoctorProfile />} />
             </Route>
 
-            {/* Admin Role-Protected Routes */}
             <Route element={<DashboardLayout allowedRoles={['admin']} />}>
               <Route path="/admin/dashboard" element={<AdminDashboard />} />
               <Route path="/admin/doctors" element={<AdminDoctors />} />

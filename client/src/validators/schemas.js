@@ -1,14 +1,5 @@
 import { z } from 'zod';
 
-/**
- * ============================================================================
- * UNIT IV: Schema-Based Client-Side Form Validation using Zod
- * ============================================================================
- * These schemas demonstrate declarative validation rules, custom error messages,
- * regex matching, boundary constraints, and cross-field validation (e.g. password confirmation).
- */
-
-// 1. Patient & Staff Authentication Schema
 export const loginSchema = z.object({
   email: z
     .string()
@@ -21,7 +12,6 @@ export const loginSchema = z.object({
     .min(6, 'Password must contain at least 6 characters'),
 });
 
-// 2. Patient Registration Schema with Refinement for Password Matching
 export const registerSchema = z
   .object({
     name: z
@@ -65,7 +55,6 @@ export const registerSchema = z
     path: ['confirmPassword'],
   });
 
-// 3. Appointment Booking Reservation Schema
 export const appointmentBookingSchema = z.object({
   doctorId: z
     .string()
@@ -88,7 +77,6 @@ export const appointmentBookingSchema = z.object({
     .trim(),
 });
 
-// 4. Clinical Consultation Completion & EHR Vitals Schema
 export const consultationCompletionSchema = z.object({
   tokenNumber: z.number().int().positive('Token number must be a positive integer'),
   date: z.string().min(1, 'Date is required'),
@@ -126,7 +114,6 @@ export const consultationCompletionSchema = z.object({
   }),
 });
 
-// 5. Doctor Weekly Availability Configuration Schema
 export const doctorAvailabilitySchema = z.object({
   availableDays: z
     .array(z.string())

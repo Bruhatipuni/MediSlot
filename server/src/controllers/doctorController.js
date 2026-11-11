@@ -2,9 +2,6 @@ import Doctor from '../models/Doctor.js';
 import Appointment from '../models/Appointment.js';
 import User from '../models/User.js';
 
-// @desc    Get all doctors with search, filters & pagination
-// @route   GET /api/doctors
-// @access  Public
 export const getDoctors = async (req, res, next) => {
   try {
     const {
@@ -21,7 +18,6 @@ export const getDoctors = async (req, res, next) => {
 
     const query = { isActive: true };
 
-    // Search by name or specialization or bio
     if (search) {
       query.$or = [
         { name: { $regex: search, $options: 'i' } },
@@ -31,24 +27,20 @@ export const getDoctors = async (req, res, next) => {
       ];
     }
 
-    // Filter by specialization
     if (specialization && specialization !== 'All') {
       query.specialization = { $regex: new RegExp(`^${specialization}$`, 'i') };
     }
 
-    // Filter by availability
     if (availability !== undefined && availability !== '') {
       query.isAvailable = availability === 'true' || availability === true;
     }
 
-    // Filter by fee range
     if (minFee || maxFee) {
       query.consultationFee = {};
       if (minFee) query.consultationFee.$gte = Number(minFee);
       if (maxFee) query.consultationFee.$lte = Number(maxFee);
     }
 
-    // Sorting
     const sort = {};
     if (sortBy === 'experience') sort.experienceYears = order === 'asc' ? 1 : -1;
     else if (sortBy === 'fee') sort.consultationFee = order === 'asc' ? 1 : -1;
@@ -77,9 +69,6 @@ export const getDoctors = async (req, res, next) => {
   }
 };
 
-// @desc    Get single doctor by ID
-// @route   GET /api/doctors/:id
-// @access  Public
 export const getDoctorById = async (req, res, next) => {
   try {
     const doctor = await Doctor.findById(req.params.id);
@@ -100,9 +89,6 @@ export const getDoctorById = async (req, res, next) => {
   }
 };
 
-// @desc    Get all distinct specializations
-// @route   GET /api/doctors/meta/specializations
-// @access  Public
 export const getSpecializations = async (req, res, next) => {
   try {
     const specializations = await Doctor.distinct('specialization', { isActive: true });
@@ -115,9 +101,6 @@ export const getSpecializations = async (req, res, next) => {
   }
 };
 
-// @desc    Update doctor profile (for logged in doctor or admin)
-// @route   PUT /api/doctors/:id
-// @access  Private (Doctor/Admin)
 export const updateDoctorProfile = async (req, res, next) => {
   try {
     const doctor = await Doctor.findById(req.params.id);
@@ -129,7 +112,6 @@ export const updateDoctorProfile = async (req, res, next) => {
       });
     }
 
-    // Check authorization: doctor can only update their own profile, admin can update any
     if (req.user.role === 'doctor' && doctor.userId.toString() !== req.user._id.toString()) {
       return res.status(403).json({
         success: false,
@@ -183,9 +165,6 @@ export const updateDoctorProfile = async (req, res, next) => {
   }
 };
 
-// @desc    Get patients associated with logged in doctor
-// @route   GET /api/doctors/my/patients
-// @access  Private (Doctor)
 export const getDoctorPatients = async (req, res, next) => {
   try {
     const doctor = await Doctor.findOne({ userId: req.user._id });

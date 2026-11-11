@@ -18,33 +18,15 @@ import {
   Clock,
 } from 'lucide-react';
 
-/**
- * ============================================================================
- * UNIT I, II, III & V: Doctors Directory Component
- * ============================================================================
- * Demonstrates:
- * - JavaScript Refreshing Concepts: Arrow functions, block-scoped const/let,
- *   destructuring assignments, array iteration/transformation (.map, .filter, .reduce),
- *   spread operator, and immutability.
- * - React Fundamentals: Declarative UI paradigm, component composition.
- * - Performance Hooks:
- *   - useDebounce: Custom hook preventing rapid re-render & request spam on keystrokes.
- *   - useCallback: Preserving function referential equality across render cycles.
- *   - useMemo: Memoizing derived state calculations (e.g., active filter counts).
- * - Client-Side Routing: useSearchParams for URL query parameter synchronization.
- */
 const Doctors = () => {
-  // Query parameter extraction via React Router DOM
   const [searchParams, setSearchParams] = useSearchParams();
   const initialSearch = searchParams.get('search') || '';
   const initialSpecialization = searchParams.get('specialization') || 'All';
 
-  // Local State Management (useState)
   const [doctors, setDoctors] = useState([]);
   const [specializations, setSpecializations] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  // Controlled Filter States
   const [search, setSearch] = useState(initialSearch);
   const [selectedSpecialization, setSelectedSpecialization] = useState(initialSpecialization);
   const [availability, setAvailability] = useState('');
@@ -53,12 +35,10 @@ const Doctors = () => {
   const [totalPages, setTotalPages] = useState(1);
   const [totalDoctors, setTotalDoctors] = useState(0);
 
-  // UNIT III: Custom Hook for Debounced Search Input
   const debouncedSearch = useDebounce(search, 350);
 
-  // Fetch distinct clinical specializations on mount
   useEffect(() => {
-    let isSubscribed = true; // Effect cleanup pattern to prevent state update on unmounted component
+    let isSubscribed = true;
     const fetchSpecializations = async () => {
       try {
         const { data } = await api.get('/doctors/meta/specializations');
@@ -76,7 +56,6 @@ const Doctors = () => {
     };
   }, []);
 
-  // UNIT III: useCallback ensures referential stability of fetchDoctors
   const fetchDoctors = useCallback(async () => {
     setLoading(true);
     try {
@@ -105,12 +84,10 @@ const Doctors = () => {
     }
   }, [debouncedSearch, selectedSpecialization, availability, sortBy, currentPage]);
 
-  // Trigger data fetching whenever debounced filters or pagination changes
   useEffect(() => {
     fetchDoctors();
   }, [fetchDoctors]);
 
-  // UNIT III: useMemo for Derived State (calculating applied filters count)
   const activeFiltersCount = useMemo(() => {
     let count = 0;
     if (debouncedSearch) count += 1;
@@ -130,7 +107,6 @@ const Doctors = () => {
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-10 space-y-8 animate-fadeIn">
-      {/* Page Header */}
       <div className="bg-white rounded-3xl p-6 sm:p-8 border border-slate-200/90 shadow-soft">
         <div className="max-w-3xl">
           <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-brand-50 text-brand-700 text-xs font-bold border border-brand-200 mb-3 shadow-2xs">
@@ -145,9 +121,7 @@ const Doctors = () => {
           </p>
         </div>
 
-        {/* Filter Controls Bar */}
         <div className="mt-8 pt-6 border-t border-slate-100 grid grid-cols-1 md:grid-cols-12 gap-3 items-center">
-          {/* Debounced Search Input */}
           <div className="md:col-span-5 relative">
             <Search className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
             <input
@@ -174,7 +148,6 @@ const Doctors = () => {
             )}
           </div>
 
-          {/* Specialization Filter Dropdown */}
           <div className="md:col-span-3">
             <select
               value={selectedSpecialization}
@@ -193,7 +166,6 @@ const Doctors = () => {
             </select>
           </div>
 
-          {/* Availability Toggle */}
           <div className="md:col-span-2">
             <select
               value={availability}
@@ -209,7 +181,6 @@ const Doctors = () => {
             </select>
           </div>
 
-          {/* Sort By */}
           <div className="md:col-span-2">
             <select
               value={sortBy}
@@ -227,7 +198,6 @@ const Doctors = () => {
           </div>
         </div>
 
-        {/* Quick Filter Horizontal Scrollable Chips */}
         <div className="mt-4 pt-4 border-t border-slate-100 flex items-center gap-2 overflow-x-auto pb-1 text-xs">
           <span className="text-slate-400 font-semibold text-[11px] uppercase tracking-wider flex-shrink-0">
             Departments:
@@ -263,7 +233,6 @@ const Doctors = () => {
           ))}
         </div>
 
-        {/* Applied Filter Tags & Reset */}
         {activeFiltersCount > 0 && (
           <div className="flex flex-wrap items-center gap-2 mt-3 pt-3 border-t border-slate-100 text-xs">
             <span className="text-slate-400 font-medium">Applied Filters ({activeFiltersCount}):</span>
@@ -301,7 +270,6 @@ const Doctors = () => {
         )}
       </div>
 
-      {/* Results Header Counter */}
       <div className="flex items-center justify-between text-xs text-slate-500 px-1 font-medium">
         <p>
           Showing <span className="font-extrabold text-slate-900">{doctors.length}</span> of{' '}
@@ -310,7 +278,6 @@ const Doctors = () => {
         <p>Page {currentPage} of {totalPages}</p>
       </div>
 
-      {/* Doctors Grid */}
       {loading ? (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           {Array.from({ length: 8 }).map((_, i) => (
@@ -333,7 +300,6 @@ const Doctors = () => {
         />
       )}
 
-      {/* Pagination Controls */}
       {totalPages > 1 && (
         <div className="flex items-center justify-center gap-3 pt-6">
           <button

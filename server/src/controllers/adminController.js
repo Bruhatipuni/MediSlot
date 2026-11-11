@@ -4,9 +4,6 @@ import Appointment from '../models/Appointment.js';
 import Queue from '../models/Queue.js';
 import MedicalReport from '../models/MedicalReport.js';
 
-// @desc    Get Admin Dashboard Stats & Metrics
-// @route   GET /api/admin/stats
-// @access  Private (Admin)
 export const getAdminStats = async (req, res, next) => {
   try {
     const todayStr = new Date().toISOString().slice(0, 10);
@@ -27,7 +24,6 @@ export const getAdminStats = async (req, res, next) => {
       MedicalReport.countDocuments(),
     ]);
 
-    // Status distribution
     const statusCounts = await Appointment.aggregate([
       { $group: { _id: '$status', count: { $sum: 1 } } },
     ]);
@@ -45,14 +41,12 @@ export const getAdminStats = async (req, res, next) => {
       statusMap[s._id] = s.count;
     });
 
-    // Specialization breakdown
     const specializationStats = await Doctor.aggregate([
       { $match: { isActive: true } },
       { $group: { _id: '$specialization', count: { $sum: 1 } } },
       { $sort: { count: -1 } },
     ]);
 
-    // Last 7 days appointment trend for chart
     const past7Days = [];
     for (let i = 6; i >= 0; i--) {
       const d = new Date();
@@ -65,7 +59,6 @@ export const getAdminStats = async (req, res, next) => {
         const total = await Appointment.countDocuments({ date: day });
         const completed = await Appointment.countDocuments({ date: day, status: 'completed' });
         const cancelled = await Appointment.countDocuments({ date: day, status: 'cancelled' });
-        // Format label (e.g. "Mon, Oct 26")
         const dateObj = new Date(`${day}T00:00:00`);
         const label = dateObj.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' });
         return {
@@ -78,7 +71,6 @@ export const getAdminStats = async (req, res, next) => {
       })
     );
 
-    // Recent 5 appointments
     const recentAppointments = await Appointment.find()
       .populate('patientId', 'name email phone avatar')
       .populate('doctorId', 'name specialization avatar')
@@ -105,9 +97,6 @@ export const getAdminStats = async (req, res, next) => {
   }
 };
 
-// @desc    Create a new Doctor (User + Doctor record)
-// @route   POST /api/admin/doctors
-// @access  Private (Admin)
 export const createDoctor = async (req, res, next) => {
   try {
     const {
@@ -135,7 +124,6 @@ export const createDoctor = async (req, res, next) => {
       });
     }
 
-    // Check if email taken
     const existing = await User.findOne({ email: email.toLowerCase() });
     if (existing) {
       return res.status(400).json({
@@ -144,7 +132,6 @@ export const createDoctor = async (req, res, next) => {
       });
     }
 
-    // Create Doctor User
     const user = await User.create({
       name,
       email: email.toLowerCase(),
@@ -154,7 +141,6 @@ export const createDoctor = async (req, res, next) => {
       avatar: avatar || `https://api.dicebear.com/7.x/personas/svg?seed=${encodeURIComponent(name)}`,
     });
 
-    // Create Doctor Profile
     const doctor = await Doctor.create({
       userId: user._id,
       name,
@@ -191,9 +177,6 @@ export const createDoctor = async (req, res, next) => {
   }
 };
 
-// @desc    Toggle doctor active/inactive status
-// @route   PUT /api/admin/doctors/:id/toggle-status
-// @access  Private (Admin)
 export const toggleDoctorStatus = async (req, res, next) => {
   try {
     const doctor = await Doctor.findById(req.params.id);
@@ -204,7 +187,6 @@ export const toggleDoctorStatus = async (req, res, next) => {
     doctor.isActive = !doctor.isActive;
     await doctor.save();
 
-    // Also update User account status
     await User.findByIdAndUpdate(doctor.userId, { isActive: doctor.isActive });
 
     res.status(200).json({
@@ -217,9 +199,6 @@ export const toggleDoctorStatus = async (req, res, next) => {
   }
 };
 
-// @desc    Get all patients with appointment count & details
-// @route   GET /api/admin/patients
-// @access  Private (Admin)
 export const getAdminPatients = async (req, res, next) => {
   try {
     const { search } = req.query;
@@ -260,9 +239,6 @@ export const getAdminPatients = async (req, res, next) => {
   }
 };
 
-// @desc    Toggle patient active/inactive status
-// @route   PUT /api/admin/patients/:id/toggle-status
-// @access  Private (Admin)
 export const togglePatientStatus = async (req, res, next) => {
   try {
     const patient = await User.findById(req.params.id);
@@ -283,9 +259,6 @@ export const togglePatientStatus = async (req, res, next) => {
   }
 };
 
-// @desc    Get all appointments (Admin)
-// @route   GET /api/admin/appointments
-// @access  Private (Admin)
 export const getAdminAppointments = async (req, res, next) => {
   try {
     const { status, date, doctorId, search, page = 1, limit = 20 } = req.query;

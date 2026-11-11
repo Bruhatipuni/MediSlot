@@ -6,9 +6,6 @@ import Appointment from '../models/Appointment.js';
 import User from '../models/User.js';
 import { reportsStorageDir } from '../middleware/uploadMiddleware.js';
 
-// @desc    Upload a new medical report for a patient
-// @route   POST /api/reports/upload
-// @access  Private (Doctor / Admin)
 export const uploadMedicalReport = async (req, res, next) => {
   try {
     if (!req.file) {
@@ -21,7 +18,6 @@ export const uploadMedicalReport = async (req, res, next) => {
     const { patientId, appointmentId, title, reportType, description, notes } = req.body;
 
     if (!patientId || !title) {
-      // Remove uploaded file if validation fails
       if (req.file && fs.existsSync(req.file.path)) {
         fs.unlinkSync(req.file.path);
       }
@@ -31,7 +27,6 @@ export const uploadMedicalReport = async (req, res, next) => {
       });
     }
 
-    // Verify patient exists
     const patient = await User.findById(patientId);
     if (!patient) {
       if (req.file && fs.existsSync(req.file.path)) fs.unlinkSync(req.file.path);
@@ -87,9 +82,6 @@ export const uploadMedicalReport = async (req, res, next) => {
   }
 };
 
-// @desc    Get patient's authorized medical reports
-// @route   GET /api/reports/my
-// @access  Private (Patient)
 export const getMyReports = async (req, res, next) => {
   try {
     const reports = await MedicalReport.find({ patientId: req.user._id })
@@ -107,9 +99,6 @@ export const getMyReports = async (req, res, next) => {
   }
 };
 
-// @desc    Get reports uploaded by logged in doctor or for doctor's patient
-// @route   GET /api/reports/doctor
-// @access  Private (Doctor)
 export const getDoctorReports = async (req, res, next) => {
   try {
     const doctor = await Doctor.findOne({ userId: req.user._id });
@@ -138,9 +127,6 @@ export const getDoctorReports = async (req, res, next) => {
   }
 };
 
-// @desc    Download authorized medical report PDF
-// @route   GET /api/reports/:id/download
-// @access  Private (Authorized Patient, Doctor, Admin)
 export const downloadReport = async (req, res, next) => {
   try {
     const report = await MedicalReport.findById(req.params.id);
@@ -152,7 +138,6 @@ export const downloadReport = async (req, res, next) => {
       });
     }
 
-    // Role-based security check:
     let isAuthorized = false;
 
     if (req.user.role === 'admin') {
@@ -182,7 +167,6 @@ export const downloadReport = async (req, res, next) => {
       });
     }
 
-    // Send file securely with headers
     res.setHeader('Content-Type', report.mimeType || 'application/pdf');
     res.setHeader(
       'Content-Disposition',
@@ -196,9 +180,6 @@ export const downloadReport = async (req, res, next) => {
   }
 };
 
-// @desc    Delete medical report
-// @route   DELETE /api/reports/:id
-// @access  Private (Doctor / Admin)
 export const deleteReport = async (req, res, next) => {
   try {
     const report = await MedicalReport.findById(req.params.id);
@@ -207,7 +188,6 @@ export const deleteReport = async (req, res, next) => {
       return res.status(404).json({ success: false, message: 'Medical report not found.' });
     }
 
-    // Check authorization
     if (req.user.role === 'doctor') {
       const doctor = await Doctor.findOne({ userId: req.user._id });
       if (!doctor || report.doctorId.toString() !== doctor._id.toString()) {
@@ -215,7 +195,6 @@ export const deleteReport = async (req, res, next) => {
       }
     }
 
-    // Remove file from disk
     const filePath = path.join(reportsStorageDir, report.fileName);
     if (fs.existsSync(filePath)) {
       fs.unlinkSync(filePath);

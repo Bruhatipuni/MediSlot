@@ -24,7 +24,6 @@ export const AuthProvider = ({ children }) => {
   const [token, setToken] = useState(() => localStorage.getItem('medislot_token') || null);
   const [loading, setLoading] = useState(true);
 
-  // Verify and fetch current profile on mount
   useEffect(() => {
     const fetchMe = async () => {
       if (!token) {
@@ -53,7 +52,6 @@ export const AuthProvider = ({ children }) => {
     fetchMe();
   }, [token]);
 
-  // Login handler
   const login = async (email, password) => {
     try {
       const { data } = await api.post('/auth/login', { email, password });
@@ -81,7 +79,6 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  // Register handler
   const register = async (userData) => {
     try {
       const { data } = await api.post('/auth/register', userData);
@@ -100,7 +97,6 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  // Logout handler
   const logout = () => {
     setUser(null);
     setDoctorProfile(null);
@@ -111,7 +107,6 @@ export const AuthProvider = ({ children }) => {
     toast.success('Logged out successfully.');
   };
 
-  // Update profile in state
   const updateUser = (updatedFields) => {
     setUser((prev) => {
       const updated = { ...prev, ...updatedFields };

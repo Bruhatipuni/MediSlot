@@ -55,7 +55,6 @@ const QueueDisplay = () => {
   return (
     <div className="min-h-screen bg-slate-900 text-white p-6 sm:p-8 flex flex-col justify-between select-none">
       <div>
-        {/* Top Header */}
         <div className="flex items-center justify-between pb-6 border-b border-slate-800">
           <div className="flex items-center gap-3">
             <Link
@@ -98,7 +97,6 @@ const QueueDisplay = () => {
           </div>
         </div>
 
-        {/* Queues Grid */}
         <div className="mt-8">
           {loading ? (
             <div className="py-24 text-center space-y-3">
@@ -121,7 +119,6 @@ const QueueDisplay = () => {
                     className="bg-slate-850 rounded-2xl border border-slate-800 p-5 flex flex-col justify-between"
                   >
                     <div>
-                      {/* Doctor header */}
                       <div className="flex items-center justify-between pb-3 border-b border-slate-800">
                         <div>
                           <h3 className="text-sm font-bold text-white line-clamp-1">{doc.name}</h3>
@@ -132,7 +129,6 @@ const QueueDisplay = () => {
                         </span>
                       </div>
 
-                      {/* Token Serving */}
                       <div className="py-6 text-center">
                         <p className="text-[10px] uppercase font-bold tracking-wider text-slate-400 mb-1">
                           Now Serving
@@ -146,7 +142,6 @@ const QueueDisplay = () => {
                       </div>
                     </div>
 
-                    {/* Next & Waiting */}
                     <div className="pt-3 border-t border-slate-800 grid grid-cols-2 gap-2 text-center text-xs">
                       <div className="bg-slate-800/50 p-2.5 rounded-xl">
                         <p className="text-[10px] text-slate-400">Next</p>
@@ -169,7 +164,6 @@ const QueueDisplay = () => {
         </div>
       </div>
 
-      {/* Footer */}
       <div className="mt-8 pt-4 border-t border-slate-800 flex items-center justify-between text-xs text-slate-500">
         <p>Please report to the nurse station when your token is called.</p>
         <p className="font-mono text-[11px]">Auto-refreshing every 6s</p>

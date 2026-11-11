@@ -7,7 +7,6 @@ const Footer = () => {
     <footer className="bg-slate-900 text-slate-400 text-xs border-t border-slate-800">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
-          {/* Brand info */}
           <div className="space-y-3">
             <div className="flex items-center gap-2">
               <div className="w-8 h-8 rounded-lg bg-brand-600 text-white flex items-center justify-center font-bold">
@@ -24,7 +23,6 @@ const Footer = () => {
             </div>
           </div>
 
-          {/* Quick Links */}
           <div>
             <h4 className="text-xs font-semibold text-white uppercase tracking-wider mb-3">Quick Links</h4>
             <ul className="space-y-2">
@@ -46,7 +44,6 @@ const Footer = () => {
             </ul>
           </div>
 
-          {/* Specializations */}
           <div>
             <h4 className="text-xs font-semibold text-white uppercase tracking-wider mb-3">Specialties</h4>
             <ul className="space-y-2">
@@ -59,7 +56,6 @@ const Footer = () => {
             </ul>
           </div>
 
-          {/* Clinic Hours & Helpline */}
           <div>
             <h4 className="text-xs font-semibold text-white uppercase tracking-wider mb-3">Clinic Information</h4>
             <div className="space-y-2 text-[11px]">
@@ -79,7 +75,6 @@ const Footer = () => {
           </div>
         </div>
 
-        {/* Bottom bar */}
         <div className="border-t border-slate-800 pt-5 flex flex-col sm:flex-row items-center justify-between gap-3 text-[11px] text-slate-500">
           <p>© {new Date().getFullYear()} MediSlot Healthcare System. All rights reserved.</p>
           <p>Third-Year CSE Semester Capstone Project.</p>

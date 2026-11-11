@@ -8,7 +8,6 @@ const DoctorCard = ({ doctor }) => {
   return (
     <div className="bg-white rounded-2xl border border-slate-200 p-5 flex flex-col justify-between hover:border-slate-300 hover:shadow-sm transition-all">
       <div>
-        {/* Doctor Header */}
         <div className="flex items-start gap-3.5 mb-3.5">
           <img
             src={doctor.avatar || `https://api.dicebear.com/7.x/personas/svg?seed=${encodeURIComponent(doctor.name)}`}
@@ -33,7 +32,6 @@ const DoctorCard = ({ doctor }) => {
           </div>
         </div>
 
-        {/* Details row */}
         <div className="py-2.5 px-3 rounded-xl bg-slate-50 text-xs text-slate-600 space-y-1 mb-3.5">
           <div className="flex items-center justify-between">
             <span className="text-slate-400">Experience</span>
@@ -50,7 +48,6 @@ const DoctorCard = ({ doctor }) => {
         </div>
       </div>
 
-      {/* Actions */}
       <div className="grid grid-cols-2 gap-2 pt-2 border-t border-slate-100">
         <Link
           to={`/doctors/${doctor._id}`}
