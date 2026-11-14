@@ -1,3 +1,4 @@
+/** @type {import('tailwindcss').Config} */
 export default {
   content: [
     "./index.html",
@@ -7,17 +8,17 @@ export default {
     extend: {
       colors: {
         brand: {
-          50: '#f0f9ff',
-          100: '#e0f2fe',
-          200: '#bae6fd',
-          300: '#7dd3fc',
-          400: '#38bdf8',
-          500: '#0ea5e9',
-          600: '#0284c7',
-          700: '#0369a1',
-          800: '#075985',
-          900: '#0c4a6e',
-          950: '#082f49',
+          50: '#effcf9',
+          100: '#d7f5ee',
+          200: '#b2e8dc',
+          300: '#80d7c7',
+          400: '#42bfaf',
+          500: '#16a296',
+          600: '#0d8c83', // MediSlot teal primary
+          700: '#0b706c',
+          800: '#0d5958',
+          900: '#10494a',
+          950: '#092f34',
         },
         medteal: {
           50: '#f0fdfa',
@@ -25,7 +26,7 @@ export default {
           200: '#99f6e4',
           300: '#5eead4',
           400: '#2dd4bf',
-          500: '#14b8a6',
+          500: '#14b8a6', // Teal Accent
           600: '#0d9488',
           700: '#0f766e',
           800: '#115e59',

@@ -80,7 +80,7 @@ const doctorSchema = new mongoose.Schema(
       default: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
     },
     workingHours: {
-      start: { type: String, default: '09:00' },
+      start: { type: String, default: '09:00' }, // 24hr format HH:mm
       end: { type: String, default: '17:00' },
     },
     slotDurationMinutes: {
@@ -109,6 +109,7 @@ const doctorSchema = new mongoose.Schema(
   }
 );
 
+// Compound text index for name, specialization and clinic search
 doctorSchema.index({ name: 'text', specialization: 'text', bio: 'text' });
 
 const Doctor = mongoose.model('Doctor', doctorSchema);

@@ -67,6 +67,7 @@ const PatientReports = () => {
 
   return (
     <div className="space-y-6">
+      {/* Header */}
       <div className="bg-white rounded-3xl p-6 sm:p-8 border border-slate-200/80 shadow-soft flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
           <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-brand-50 text-brand-700 text-xs font-semibold border border-brand-200 mb-2">
@@ -81,6 +82,7 @@ const PatientReports = () => {
           </p>
         </div>
 
+        {/* Search */}
         <div className="relative w-full sm:w-64">
           <Search className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
           <input
@@ -93,6 +95,7 @@ const PatientReports = () => {
         </div>
       </div>
 
+      {/* Reports Table / Card View */}
       {loading ? (
         <TableSkeleton rows={4} />
       ) : filteredReports.length > 0 ? (
@@ -178,6 +181,7 @@ const PatientReports = () => {
         />
       )}
 
+      {/* Report Details Modal */}
       <Modal
         isOpen={modalOpen}
         onClose={() => setModalOpen(false)}

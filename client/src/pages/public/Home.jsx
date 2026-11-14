@@ -1,281 +1,1191 @@
-import React, { useState, useEffect } from 'react';
+// import React, { useEffect, useState } from 'react';
+// import { Link, useNavigate } from 'react-router-dom';
+// import api from '../../api/axiosClient';
+// import DoctorCard from '../../components/doctor/DoctorCard';
+// import { CardSkeleton } from '../../components/common/LoadingSkeleton';
+// import {
+//   Search,
+//   CalendarDays,
+//   Clock3,
+//   ShieldCheck,
+//   ArrowRight,
+//   ArrowUpRight,
+//   CheckCircle2,
+//   Stethoscope,
+//   ChevronRight,
+//   HeartPulse,
+//   Brain,
+//   Baby,
+//   Bone,
+//   Sparkles,
+//   Activity,
+//   CalendarCheck,
+//   ClipboardList,
+//   MoveRight,
+//   Heart,
+//   Plus,
+//   ScanHeart,
+//   ShieldPlus,
+//   Smartphone,
+// } from 'lucide-react';
+
+// const departmentList = [
+//   { name: 'Cardiology', label: 'Cardiology', icon: HeartPulse, detail: 'Heart & circulation', tint: 'rose' },
+//   { name: 'Dermatology', label: 'Dermatology', icon: Sparkles, detail: 'Skin & wellness', tint: 'violet' },
+//   { name: 'Pediatrics', label: 'Pediatrics', icon: Baby, detail: 'Care for little ones', tint: 'amber' },
+//   { name: 'Orthopedics', label: 'Orthopedics', icon: Bone, detail: 'Bones & mobility', tint: 'sky' },
+//   { name: 'Neurology', label: 'Neurology', icon: Brain, detail: 'Brain & nerves', tint: 'indigo' },
+//   { name: 'General Medicine', label: 'General care', icon: Stethoscope, detail: 'Everyday healthcare', tint: 'teal' },
+// ];
+
+// const Home = () => {
+//   const navigate = useNavigate();
+//   const [searchQuery, setSearchQuery] = useState('');
+//   const [selectedSpecialty, setSelectedSpecialty] = useState('All');
+//   const [featuredDoctors, setFeaturedDoctors] = useState([]);
+//   const [loading, setLoading] = useState(true);
+
+//   useEffect(() => {
+//     let active = true;
+//     const fetchDoctors = async () => {
+//       try {
+//         const { data } = await api.get('/doctors?limit=4');
+//         if (active && data.success) setFeaturedDoctors(data.doctors || []);
+//       } catch (err) {
+//         console.error('Error fetching featured doctors:', err);
+//       } finally {
+//         if (active) setLoading(false);
+//       }
+//     };
+//     fetchDoctors();
+//     return () => { active = false; };
+//   }, []);
+
+//   const handleSearchSubmit = (e) => {
+//     e.preventDefault();
+//     const params = new URLSearchParams();
+//     if (searchQuery.trim()) params.append('search', searchQuery.trim());
+//     if (selectedSpecialty !== 'All') params.append('specialization', selectedSpecialty);
+//     navigate(`/doctors?${params.toString()}`);
+//   };
+
+//   return (
+//     <div className="home-page">
+//       {/* HERO */}
+//       <section className="hero-shell">
+//         <div className="hero-orb hero-orb-one" />
+//         <div className="hero-orb hero-orb-two" />
+//         <div className="hero-grid-pattern" />
+//         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 hero-inner">
+//           <div className="hero-copy">
+//             <div className="hero-eyebrow">
+//               <span className="hero-eyebrow-pulse"><Activity className="w-3.5 h-3.5" /></span>
+//               <span>YOUR HEALTH, IN BETTER HANDS</span>
+//               <span className="hero-eyebrow-line" />
+//             </div>
+//             <h1>
+//               Better care starts with <span className="hero-heading-accent">a simpler</span> appointment.
+//             </h1>
+//             <p className="hero-description">
+//               Discover trusted specialists, reserve a time that works for you, and follow your clinic queue — all from one calm, connected space.
+//             </p>
+
+//             <form onSubmit={handleSearchSubmit} className="hero-search-card">
+//               <div className="hero-search-main">
+//                 <div className="hero-search-icon"><Search className="w-5 h-5" /></div>
+//                 <div className="min-w-0 flex-1">
+//                   <label htmlFor="doctor-search" className="hero-search-label">Find your specialist</label>
+//                   <input
+//                     id="doctor-search"
+//                     type="text"
+//                     value={searchQuery}
+//                     onChange={(e) => setSearchQuery(e.target.value)}
+//                     placeholder="Doctor name, condition or specialty"
+//                     className="hero-search-input"
+//                   />
+//                 </div>
+//               </div>
+//               <div className="hero-search-divider" />
+//               <div className="hero-specialty-wrap">
+//                 <label htmlFor="specialty-select" className="hero-search-label">Department</label>
+//                 <select
+//                   id="specialty-select"
+//                   value={selectedSpecialty}
+//                   onChange={(e) => setSelectedSpecialty(e.target.value)}
+//                   className="hero-specialty-select"
+//                 >
+//                   <option value="All">All specialties</option>
+//                   {departmentList.map((department) => (
+//                     <option key={department.name} value={department.name}>{department.name}</option>
+//                   ))}
+//                 </select>
+//               </div>
+//               <button type="submit" className="hero-search-button">
+//                 Find doctors <ArrowRight className="w-4 h-4" />
+//               </button>
+//             </form>
+
+//             <div className="hero-assurances">
+//               <span><CheckCircle2 className="w-4 h-4" /> Verified doctor profiles</span>
+//               <span><CheckCircle2 className="w-4 h-4" /> Live queue updates</span>
+//               <span><CheckCircle2 className="w-4 h-4" /> Private health records</span>
+//             </div>
+//             <div className="hero-quick-links">
+//               <span>Explore:</span>
+//               <Link to="/doctors">Find a doctor <ArrowUpRight className="w-3 h-3" /></Link>
+//               <Link to="/queue-display">Clinic queue <ArrowUpRight className="w-3 h-3" /></Link>
+//             </div>
+//           </div>
+
+//           {/* Product-inspired visual: illustrative preview, not live appointment data */}
+//           <div className="hero-visual" aria-label="Illustration of the MediSlot appointment experience">
+//             <div className="hero-visual-glow" />
+//             <div className="visual-orbit visual-orbit-a" />
+//             <div className="visual-orbit visual-orbit-b" />
+//             <div className="visual-plus visual-plus-a"><Plus className="w-5 h-5" /></div>
+//             <div className="visual-plus visual-plus-b"><Plus className="w-4 h-4" /></div>
+//             <div className="visual-main-card">
+//               <div className="visual-card-topline">
+//                 <div className="visual-brand-mark"><Activity className="w-4 h-4" /></div>
+//                 <div>
+//                   <p className="visual-mini-title">MediSlot care</p>
+//                   <p className="visual-mini-subtitle">Your health, organized</p>
+//                 </div>
+//                 <span className="visual-live-pill"><span /> PREVIEW</span>
+//               </div>
+//               <div className="visual-greeting">
+//                 <p className="visual-muted">YOUR NEXT STEP</p>
+//                 <h2>Care that fits<br />your day.</h2>
+//                 <p>Appointments and queue details, together.</p>
+//               </div>
+//               <div className="visual-appointment-card">
+//                 <div className="visual-doctor-avatar"><Stethoscope className="w-6 h-6" /></div>
+//                 <div className="flex-1 min-w-0">
+//                   <p className="visual-muted">SPECIALIST VISIT</p>
+//                   <h3>Consultation</h3>
+//                   <p>Choose a doctor and a time</p>
+//                 </div>
+//                 <span className="visual-check"><CheckCircle2 className="w-4 h-4" /></span>
+//               </div>
+//               <div className="visual-card-bottom">
+//                 <div className="visual-bottom-icon"><Clock3 className="w-4 h-4" /></div>
+//                 <div className="flex-1">
+//                   <p className="visual-bottom-title">Queue updates</p>
+//                   <p className="visual-bottom-copy">Know when it is your turn</p>
+//                 </div>
+//                 <ArrowUpRight className="w-4 h-4 text-teal-600" />
+//               </div>
+//               <div className="visual-card-progress"><span /></div>
+//             </div>
+//             <div className="floating-note floating-note-top">
+//               <div className="floating-note-icon mint"><CalendarCheck className="w-4 h-4" /></div>
+//               <div><strong>Easy booking</strong><span>Pick a convenient slot</span></div>
+//             </div>
+//             <div className="floating-note floating-note-bottom">
+//               <div className="floating-note-icon peach"><Heart className="w-4 h-4" /></div>
+//               <div><strong>Care comes first</strong><span>One connected experience</span></div>
+//             </div>
+//             <div className="visual-roundel"><ScanHeart className="w-7 h-7" /><span>CARE<br />CONNECTED</span></div>
+//           </div>
+//         </div>
+//         <div className="hero-bottom-wave" />
+//       </section>
+
+//       {/* BENEFIT STRIP */}
+//       <section className="benefit-strip-wrap max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+//         <div className="benefit-strip">
+//           <div className="benefit-item">
+//             <div className="benefit-icon"><CalendarDays className="w-5 h-5" /></div>
+//             <div><h3>Simple scheduling</h3><p>Book without the back-and-forth</p></div>
+//           </div>
+//           <div className="benefit-separator" />
+//           <div className="benefit-item">
+//             <div className="benefit-icon teal"><Clock3 className="w-5 h-5" /></div>
+//             <div><h3>Queue visibility</h3><p>Follow your token in real time</p></div>
+//           </div>
+//           <div className="benefit-separator" />
+//           <div className="benefit-item">
+//             <div className="benefit-icon violet"><ShieldCheck className="w-5 h-5" /></div>
+//             <div><h3>One secure space</h3><p>Keep your records organized</p></div>
+//           </div>
+//         </div>
+//       </section>
+
+//       {/* SPECIALTIES */}
+//       <section className="section-block max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+//         <div className="section-heading-row">
+//           <div>
+//             <span className="section-kicker">CARE, YOUR WAY</span>
+//             <h2>Find the right kind<br className="hidden sm:block" /> of specialist.</h2>
+//             <p>Start with a department and discover care tailored to your needs.</p>
+//           </div>
+//           <Link to="/doctors" className="section-link">Explore all doctors <ArrowUpRight className="w-4 h-4" /></Link>
+//         </div>
+//         <div className="specialty-grid">
+//           {departmentList.map((department, index) => {
+//             const Icon = department.icon;
+//             return (
+//               <Link
+//                 key={department.name}
+//                 to={`/doctors?specialization=${encodeURIComponent(department.name)}`}
+//                 className={`specialty-card specialty-${department.tint}`}
+//               >
+//                 <div className="specialty-card-top"><span className="specialty-number">0{index + 1}</span><ArrowUpRight className="w-4 h-4 specialty-arrow" /></div>
+//                 <div className="specialty-icon"><Icon className="w-6 h-6" /></div>
+//                 <h3>{department.label}</h3>
+//                 <p>{department.detail}</p>
+//               </Link>
+//             );
+//           })}
+//         </div>
+//       </section>
+
+//       {/* FEATURED DOCTORS */}
+//       <section className="doctors-showcase">
+//         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 section-block">
+//           <div className="section-heading-row">
+//             <div>
+//               <span className="section-kicker">MEET YOUR CARE TEAM</span>
+//               <h2>Specialists who put<br className="hidden sm:block" /> your wellbeing first.</h2>
+//               <p>Explore doctor profiles and find a consultation that works for you.</p>
+//             </div>
+//             <Link to="/doctors" className="section-link">View doctor directory <ArrowUpRight className="w-4 h-4" /></Link>
+//           </div>
+//           {loading ? (
+//             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">{Array.from({ length: 4 }).map((_, i) => <CardSkeleton key={i} />)}</div>
+//           ) : featuredDoctors.length > 0 ? (
+//             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
+//               {featuredDoctors.map((doctor) => <DoctorCard key={doctor._id} doctor={doctor} />)}
+//             </div>
+//           ) : (
+//             <div className="doctor-empty-panel">
+//               <div className="doctor-empty-icon"><Stethoscope className="w-6 h-6" /></div>
+//               <h3>Doctor profiles are being prepared</h3>
+//               <p>Explore the directory to check available specialists.</p>
+//               <Link to="/doctors" className="section-link">Open doctor directory <ArrowRight className="w-4 h-4" /></Link>
+//             </div>
+//           )}
+//         </div>
+//       </section>
+
+//       {/* HOW IT WORKS */}
+//       <section className="section-block max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+//         <div className="workflow-panel">
+//           <div className="workflow-intro">
+//             <span className="section-kicker">A CLEARER JOURNEY</span>
+//             <h2>Three steps.<br />More peace of mind.</h2>
+//             <p>From finding a specialist to arriving at the clinic, keep each step in one place.</p>
+//             <Link to="/doctors" className="workflow-cta">Get started <MoveRight className="w-4 h-4" /></Link>
+//             <div className="workflow-shield"><ShieldPlus className="w-7 h-7" /><span>Thoughtful care<br />starts here</span></div>
+//           </div>
+//           <div className="workflow-steps">
+//             <div className="workflow-step">
+//               <div className="workflow-step-index">01</div>
+//               <div className="workflow-step-icon"><Search className="w-5 h-5" /></div>
+//               <div><h3>Discover a doctor</h3><p>Explore verified doctor profiles, specialties, consultation fees and available slots.</p></div>
+//               <span className="workflow-step-line" />
+//             </div>
+//             <div className="workflow-step">
+//               <div className="workflow-step-index">02</div>
+//               <div className="workflow-step-icon"><CalendarCheck className="w-5 h-5" /></div>
+//               <div><h3>Reserve your visit</h3><p>Choose a suitable appointment time and receive your booking details.</p></div>
+//               <span className="workflow-step-line" />
+//             </div>
+//             <div className="workflow-step">
+//               <div className="workflow-step-index">03</div>
+//               <div className="workflow-step-icon"><ClipboardList className="w-5 h-5" /></div>
+//               <div><h3>Follow your queue</h3><p>Check your token status and stay informed as the clinic queue moves.</p></div>
+//             </div>
+//           </div>
+//         </div>
+//       </section>
+
+//       {/* QUEUE FEATURE CTA */}
+//       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-20">
+//         <div className="queue-feature-card">
+//           <div className="queue-feature-art"><div className="queue-art-circle"><Smartphone className="w-10 h-10" /></div><span className="queue-art-dot dot-one" /><span className="queue-art-dot dot-two" /><span className="queue-art-dot dot-three" /></div>
+//           <div className="queue-feature-content">
+//             <span className="queue-feature-kicker">LESS GUESSWORK. MORE CLARITY.</span>
+//             <h2>Your turn, without<br className="hidden sm:block" /> the uncertainty.</h2>
+//             <p>Use the live reception display to follow clinic token progress and help make waiting more predictable.</p>
+//             <Link to="/queue-display" className="queue-feature-button">Explore live queue <ArrowUpRight className="w-4 h-4" /></Link>
+//           </div>
+//           <div className="queue-feature-watermark"><Activity className="w-44 h-44" /></div>
+//         </div>
+//       </section>
+//     </div>
+//   );
+// };
+
+// export default Home;
+
+import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+
 import api from '../../api/axiosClient';
 import DoctorCard from '../../components/doctor/DoctorCard';
 import { CardSkeleton } from '../../components/common/LoadingSkeleton';
+
 import {
   Search,
-  Calendar,
-  Clock,
+  CalendarDays,
+  Clock3,
   ShieldCheck,
-  Users,
-  Activity,
   ArrowRight,
-  Tv,
+  ArrowUpRight,
   CheckCircle2,
   Stethoscope,
-  ChevronRight,
   HeartPulse,
   Brain,
   Baby,
   Bone,
-  Eye,
-  Pill,
+  Sparkles,
+  Activity,
+  CalendarCheck,
+  ClipboardList,
+  MoveRight,
+  Heart,
+  ScanHeart,
+  ShieldPlus,
+  Smartphone,
+  Play,
+  CircleCheck,
 } from 'lucide-react';
 
+// ========================================
+// DEPARTMENT DATA
+// ========================================
+
 const departmentList = [
-  { name: 'Cardiology', label: 'Cardiology', icon: HeartPulse, count: 'Heart & Vascular' },
-  { name: 'Dermatology', label: 'Dermatology', icon: Pill, count: 'Skin Care' },
-  { name: 'Pediatrics', label: 'Pediatrics', icon: Baby, count: 'Child Health' },
-  { name: 'Orthopedics', label: 'Orthopedics', icon: Bone, count: 'Bones & Joints' },
-  { name: 'Neurology', label: 'Neurology', icon: Brain, count: 'Brain & Spine' },
-  { name: 'General Medicine', label: 'General Medicine', icon: Stethoscope, count: 'Primary Care' },
+  {
+    name: 'Cardiology',
+    label: 'Cardiology',
+    icon: HeartPulse,
+    detail: 'Heart & circulation',
+    tint: 'rose',
+  },
+  {
+    name: 'Dermatology',
+    label: 'Dermatology',
+    icon: Sparkles,
+    detail: 'Skin & wellness',
+    tint: 'violet',
+  },
+  {
+    name: 'Pediatrics',
+    label: 'Pediatrics',
+    icon: Baby,
+    detail: 'Care for little ones',
+    tint: 'amber',
+  },
+  {
+    name: 'Orthopedics',
+    label: 'Orthopedics',
+    icon: Bone,
+    detail: 'Bones & mobility',
+    tint: 'sky',
+  },
+  {
+    name: 'Neurology',
+    label: 'Neurology',
+    icon: Brain,
+    detail: 'Brain & nerves',
+    tint: 'indigo',
+  },
+  {
+    name: 'General Medicine',
+    label: 'General care',
+    icon: Stethoscope,
+    detail: 'Everyday healthcare',
+    tint: 'teal',
+  },
 ];
+
+// ========================================
+// HOME COMPONENT
+// ========================================
 
 const Home = () => {
   const navigate = useNavigate();
+
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedSpecialty, setSelectedSpecialty] = useState('All');
   const [featuredDoctors, setFeaturedDoctors] = useState([]);
   const [loading, setLoading] = useState(true);
 
+  // ========================================
+  // FETCH FEATURED DOCTORS
+  // ========================================
+
   useEffect(() => {
+    let active = true;
+
     const fetchDoctors = async () => {
       try {
         const { data } = await api.get('/doctors?limit=4');
-        if (data.success) {
+
+        if (active && data.success) {
           setFeaturedDoctors(data.doctors || []);
         }
-      } catch (err) {
-        console.error('Error fetching featured doctors:', err);
+      } catch (error) {
+        console.error('Error fetching featured doctors:', error);
       } finally {
-        setLoading(false);
+        if (active) {
+          setLoading(false);
+        }
       }
     };
+
     fetchDoctors();
+
+    return () => {
+      active = false;
+    };
   }, []);
+
+  // ========================================
+  // DOCTOR SEARCH
+  // ========================================
 
   const handleSearchSubmit = (e) => {
     e.preventDefault();
+
     const params = new URLSearchParams();
-    if (searchQuery.trim()) params.append('search', searchQuery.trim());
-    if (selectedSpecialty !== 'All') params.append('specialization', selectedSpecialty);
+
+    if (searchQuery.trim()) {
+      params.append('search', searchQuery.trim());
+    }
+
+    if (selectedSpecialty !== 'All') {
+      params.append('specialization', selectedSpecialty);
+    }
+
     navigate(`/doctors?${params.toString()}`);
   };
 
+  // ========================================
+  // MAIN UI
+  // ========================================
+
   return (
-    <div className="space-y-16 pb-16">
-      <section className="bg-gradient-to-b from-slate-50 to-white pt-16 pb-14 border-b border-slate-200/80">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 text-center space-y-6">
-          <div className="space-y-3">
-            <h1 className="text-3xl sm:text-5xl font-extrabold text-slate-900 tracking-tight leading-tight">
-              Find and Book Top Specialist Doctors
-            </h1>
-            <p className="text-base sm:text-lg text-slate-600 max-w-2xl mx-auto font-normal">
-              Schedule verified clinic appointments, monitor your reception queue token in real time, and manage your health records effortlessly.
-            </p>
+    <div className="home-page">
+
+      {/* ==================================
+          CINEMATIC VIDEO HERO SECTION
+      ================================== */}
+
+      <section className="cinematic-hero">
+
+        {/* Background Video */}
+
+        <video
+          className="hero-background-video"
+          autoPlay
+          muted
+          loop
+          playsInline
+          preload="metadata"
+        >
+          <source
+            src="/videos/medical-hero.mp4"
+            type="video/mp4"
+          />
+
+          Your browser does not support background videos.
+        </video>
+
+        {/* Dark cinematic overlay */}
+
+        <div className="hero-video-overlay"></div>
+
+        {/* Background glow effects */}
+
+        <div className="hero-glow hero-glow-one"></div>
+        <div className="hero-glow hero-glow-two"></div>
+
+        {/* Decorative circles */}
+
+        <div className="hero-decoration hero-decoration-one"></div>
+        <div className="hero-decoration hero-decoration-two"></div>
+
+        {/* Main content */}
+
+        <div className="cinematic-hero-content">
+
+          {/* Small badge */}
+
+          <div className="cinematic-badge">
+
+            <span className="live-dot"></span>
+
+            <span>THE FUTURE OF HEALTHCARE</span>
+
+            <Sparkles size={14} />
+
           </div>
+
+          {/* Main heading */}
+
+          <h1 className="cinematic-heading">
+
+            Healthcare
+
+            <br />
+
+            <span className="hero-gradient-text">
+              Without Limits.
+            </span>
+
+          </h1>
+
+          <p className="cinematic-description">
+
+            Experience a smarter way to manage your health.
+
+            Discover trusted specialists, book appointments,
+            and follow your clinic queue — all in one
+            connected healthcare experience.
+
+          </p>
+
+          {/* Search form */}
 
           <form
             onSubmit={handleSearchSubmit}
-            className="bg-white p-2 sm:p-2.5 rounded-2xl shadow-sm border border-slate-200 flex flex-col sm:flex-row items-center gap-2 max-w-2xl mx-auto"
+            className="cinematic-search-box"
           >
-            <div className="flex items-center gap-2.5 px-3.5 py-2 w-full sm:flex-1">
-              <Search className="w-4 h-4 text-slate-400 flex-shrink-0" />
-              <input
-                type="text"
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                placeholder="Doctor name, condition, or specialty..."
-                className="w-full text-xs sm:text-sm text-slate-800 placeholder-slate-400 bg-transparent focus:outline-none"
-              />
+
+            {/* Doctor search */}
+
+            <div className="cinematic-search-field">
+
+              <div className="search-field-icon">
+                <Search size={22} />
+              </div>
+
+              <div className="search-field-content">
+
+                <label htmlFor="doctor-search">
+                  Find a Specialist
+                </label>
+
+                <input
+                  id="doctor-search"
+                  type="text"
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  placeholder="Doctor, disease or specialty"
+                />
+
+              </div>
+
             </div>
 
-            <div className="hidden sm:block w-px h-6 bg-slate-200" />
+            <div className="cinematic-search-divider"></div>
 
-            <div className="w-full sm:w-44 px-3 py-1">
-              <select
-                value={selectedSpecialty}
-                onChange={(e) => setSelectedSpecialty(e.target.value)}
-                className="w-full text-xs font-medium text-slate-700 bg-transparent focus:outline-none cursor-pointer"
-              >
-                <option value="All">All Specialties</option>
-                <option value="Cardiology">Cardiology</option>
-                <option value="Dermatology">Dermatology</option>
-                <option value="Pediatrics">Pediatrics</option>
-                <option value="Orthopedics">Orthopedics</option>
-                <option value="Neurology">Neurology</option>
-                <option value="General Medicine">General Medicine</option>
-              </select>
+            {/* Department selection */}
+
+            <div className="cinematic-search-field">
+
+              <div className="search-field-icon">
+                <Stethoscope size={22} />
+              </div>
+
+              <div className="search-field-content">
+
+                <label htmlFor="specialty-select">
+                  Medical Department
+                </label>
+
+                <select
+                  id="specialty-select"
+                  value={selectedSpecialty}
+                  onChange={(e) =>
+                    setSelectedSpecialty(e.target.value)
+                  }
+                >
+
+                  <option value="All">
+                    All Specialties
+                  </option>
+
+                  {departmentList.map((department) => (
+                    <option
+                      key={department.name}
+                      value={department.name}
+                    >
+                      {department.name}
+                    </option>
+                  ))}
+
+                </select>
+
+              </div>
+
             </div>
+
+            {/* Search button */}
 
             <button
               type="submit"
-              className="w-full sm:w-auto px-5 py-2.5 bg-brand-600 hover:bg-brand-700 text-white text-xs font-semibold rounded-xl transition-colors flex items-center justify-center gap-1.5 flex-shrink-0"
+              className="cinematic-search-button"
             >
-              <span>Search</span>
-              <ArrowRight className="w-3.5 h-3.5" />
+
+              Explore Doctors
+
+              <ArrowRight size={19} />
+
             </button>
+
           </form>
 
-          <div className="pt-2 flex flex-wrap items-center justify-center gap-6 text-xs text-slate-500 font-medium">
-            <span className="flex items-center gap-1.5">
-              <CheckCircle2 className="w-4 h-4 text-emerald-600" />
-              Verified Practitioners
-            </span>
-            <span className="flex items-center gap-1.5">
-              <CheckCircle2 className="w-4 h-4 text-emerald-600" />
-              Sequential Queue Tokens
-            </span>
-            <span className="flex items-center gap-1.5">
-              <CheckCircle2 className="w-4 h-4 text-emerald-600" />
-              Secure Private Records
-            </span>
-          </div>
-        </div>
-      </section>
+          {/* Trust indicators */}
 
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between mb-6">
+          <div className="cinematic-trust">
+
+            <span>
+              <ShieldCheck size={17} />
+              Verified Specialists
+            </span>
+
+            <span>
+              <Activity size={17} />
+              Live Queue Tracking
+            </span>
+
+            <span>
+              <HeartPulse size={17} />
+              Patient First Care
+            </span>
+
+          </div>
+
+          {/* Quick navigation */}
+
+          <div className="cinematic-links">
+
+            <Link to="/doctors">
+              Find a Doctor
+              <ArrowUpRight size={15} />
+            </Link>
+
+            <Link to="/queue-display">
+              Live Queue
+              <ArrowUpRight size={15} />
+            </Link>
+
+          </div>
+
+        </div>
+
+        {/* Floating card 1 */}
+
+        <div className="cinematic-floating-card floating-card-one">
+
+          <div className="floating-card-icon">
+            <CalendarCheck size={23} />
+          </div>
+
           <div>
-            <h2 className="text-xl font-bold text-slate-900">
-              Browse Specialties
-            </h2>
-            <p className="text-xs text-slate-500 mt-0.5">
-              Choose a medical department to see available doctors
-            </p>
+
+            <strong>Smart Booking</strong>
+
+            <p>Appointments made simple</p>
+
           </div>
-          <Link
-            to="/doctors"
-            className="text-xs font-semibold text-brand-600 hover:text-brand-700 flex items-center gap-1"
-          >
-            <span>All Specialties</span>
-            <ChevronRight className="w-3.5 h-3.5" />
-          </Link>
+
+          <CircleCheck className="floating-check" size={19} />
+
         </div>
 
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3.5">
-          {departmentList.map((dep) => {
-            const Icon = dep.icon;
-            return (
-              <Link
-                key={dep.name}
-                to={`/doctors?specialization=${encodeURIComponent(dep.name)}`}
-                className="bg-white p-4 rounded-2xl border border-slate-200 hover:border-slate-300 hover:shadow-xs transition-all text-center flex flex-col items-center justify-center space-y-2 group"
-              >
-                <div className="w-10 h-10 rounded-xl bg-slate-100 group-hover:bg-brand-50 group-hover:text-brand-600 text-slate-700 flex items-center justify-center transition-colors">
-                  <Icon className="w-5 h-5" />
-                </div>
-                <div>
-                  <p className="text-xs font-bold text-slate-900 group-hover:text-brand-600 transition-colors">
-                    {dep.label}
-                  </p>
-                  <p className="text-[10px] text-slate-400 mt-0.5">{dep.count}</p>
-                </div>
-              </Link>
-            );
-          })}
-        </div>
-      </section>
+        {/* Floating card 2 */}
 
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between mb-6">
+        <div className="cinematic-floating-card floating-card-two">
+
+          <div className="floating-card-icon">
+            <HeartPulse size={23} />
+          </div>
+
           <div>
-            <h2 className="text-xl font-bold text-slate-900">
-              Available Doctors Today
-            </h2>
-            <p className="text-xs text-slate-500 mt-0.5">
-              Verified specialists ready for appointment booking
-            </p>
+
+            <strong>Better Healthcare</strong>
+
+            <p>Care that puts you first</p>
+
           </div>
-          <Link
-            to="/doctors"
-            className="text-xs font-semibold text-brand-600 hover:text-brand-700 flex items-center gap-1"
-          >
-            <span>View All Doctors</span>
-            <ChevronRight className="w-3.5 h-3.5" />
-          </Link>
+
+          <CircleCheck className="floating-check" size={19} />
+
         </div>
 
-        {loading ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
-            {Array.from({ length: 4 }).map((_, i) => (
-              <CardSkeleton key={i} />
-            ))}
-          </div>
-        ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
-            {featuredDoctors.map((doc) => (
-              <DoctorCard key={doc._id} doctor={doc} />
-            ))}
-          </div>
-        )}
+        {/* Bottom scroll indicator */}
+
+        <a
+          href="#medi-benefits"
+          className="hero-scroll-indicator"
+          aria-label="Scroll to explore"
+        >
+
+          <span className="scroll-mouse">
+            <span></span>
+          </span>
+
+          SCROLL TO EXPLORE
+
+        </a>
+
       </section>
 
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="bg-slate-50 rounded-2xl p-6 sm:p-8 border border-slate-200">
-          <div className="max-w-xl mx-auto text-center mb-8">
-            <h2 className="text-lg sm:text-xl font-bold text-slate-900">
-              How MediSlot Works
-            </h2>
-            <p className="text-xs text-slate-500 mt-1">
-              Simple 3-step appointment and queue management
-            </p>
-          </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 text-center">
-            <div className="bg-white p-5 rounded-xl border border-slate-200/80 space-y-2">
-              <div className="w-8 h-8 rounded-lg bg-brand-50 text-brand-600 font-bold flex items-center justify-center mx-auto text-sm">
-                1
-              </div>
-              <h3 className="text-sm font-bold text-slate-900">Choose Specialist & Slot</h3>
-              <p className="text-xs text-slate-500">
-                Browse doctor profiles, choose an available time slot, and specify your visit reason.
-              </p>
+      {/* ==================================
+          BENEFIT STRIP
+      ================================== */}
+
+      <section
+        id="medi-benefits"
+        className="benefit-strip-wrap max-w-7xl mx-auto px-4 sm:px-6 lg:px-8"
+      >
+
+        <div className="benefit-strip">
+
+          <div className="benefit-item">
+
+            <div className="benefit-icon">
+              <CalendarDays className="w-5 h-5" />
             </div>
 
-            <div className="bg-white p-5 rounded-xl border border-slate-200/80 space-y-2">
-              <div className="w-8 h-8 rounded-lg bg-brand-50 text-brand-600 font-bold flex items-center justify-center mx-auto text-sm">
-                2
-              </div>
-              <h3 className="text-sm font-bold text-slate-900">Get Your Token</h3>
-              <p className="text-xs text-slate-500">
-                A daily queue token is automatically generated with an estimated waiting time.
-              </p>
-            </div>
-
-            <div className="bg-white p-5 rounded-xl border border-slate-200/80 space-y-2">
-              <div className="w-8 h-8 rounded-lg bg-brand-50 text-brand-600 font-bold flex items-center justify-center mx-auto text-sm">
-                3
-              </div>
-              <h3 className="text-sm font-bold text-slate-900">Attend Consultation</h3>
-              <p className="text-xs text-slate-500">
-                Report to the clinic reception, consult your physician, and receive authorized digital records.
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="bg-white rounded-2xl p-6 border border-slate-200 flex flex-col sm:flex-row items-center justify-between gap-4">
-          <div className="flex items-center gap-3.5">
-            <div className="w-10 h-10 rounded-xl bg-slate-100 flex items-center justify-center text-slate-700">
-              <Tv className="w-5 h-5" />
-            </div>
             <div>
-              <h3 className="text-sm font-bold text-slate-900">Clinic Reception Queue Display</h3>
-              <p className="text-xs text-slate-500">Live reception display designed for hospital waiting lobby monitors</p>
+
+              <h3>Simple Scheduling</h3>
+
+              <p>Book without the back-and-forth</p>
+
             </div>
+
           </div>
-          <Link
-            to="/queue-display"
-            className="px-4 py-2 bg-slate-900 hover:bg-slate-800 text-white text-xs font-semibold rounded-xl transition-colors whitespace-nowrap"
-          >
-            Open Reception Display
-          </Link>
+
+          <div className="benefit-separator"></div>
+
+          <div className="benefit-item">
+
+            <div className="benefit-icon teal">
+              <Clock3 className="w-5 h-5" />
+            </div>
+
+            <div>
+
+              <h3>Queue Visibility</h3>
+
+              <p>Follow your token in real time</p>
+
+            </div>
+
+          </div>
+
+          <div className="benefit-separator"></div>
+
+          <div className="benefit-item">
+
+            <div className="benefit-icon violet">
+              <ShieldCheck className="w-5 h-5" />
+            </div>
+
+            <div>
+
+              <h3>One Secure Space</h3>
+
+              <p>Keep your records organized</p>
+
+            </div>
+
+          </div>
+
         </div>
+
       </section>
+
+
+      {/* ==================================
+          MEDICAL SPECIALTIES
+      ================================== */}
+
+      <section className="section-block max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+
+        <div className="section-heading-row">
+
+          <div>
+
+            <span className="section-kicker">
+              CARE, YOUR WAY
+            </span>
+
+            <h2>
+              Find the right kind
+              <br className="hidden sm:block" />
+              of specialist.
+            </h2>
+
+            <p>
+              Start with a department and discover
+              care tailored to your needs.
+            </p>
+
+          </div>
+
+          <Link
+            to="/doctors"
+            className="section-link"
+          >
+
+            Explore all doctors
+
+            <ArrowUpRight className="w-4 h-4" />
+
+          </Link>
+
+        </div>
+
+        <div className="specialty-grid">
+
+          {departmentList.map((department, index) => {
+
+            const Icon = department.icon;
+
+            return (
+
+              <Link
+                key={department.name}
+                to={`/doctors?specialization=${encodeURIComponent(
+                  department.name
+                )}`}
+                className={`specialty-card specialty-${department.tint}`}
+              >
+
+                <div className="specialty-card-top">
+
+                  <span className="specialty-number">
+                    0{index + 1}
+                  </span>
+
+                  <ArrowUpRight className="w-4 h-4 specialty-arrow" />
+
+                </div>
+
+                <div className="specialty-icon">
+                  <Icon className="w-6 h-6" />
+                </div>
+
+                <h3>{department.label}</h3>
+
+                <p>{department.detail}</p>
+
+              </Link>
+
+            );
+
+          })}
+
+        </div>
+
+      </section>
+
+
+      {/* ==================================
+          FEATURED DOCTORS
+      ================================== */}
+
+      <section className="doctors-showcase">
+
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 section-block">
+
+          <div className="section-heading-row">
+
+            <div>
+
+              <span className="section-kicker">
+                MEET YOUR CARE TEAM
+              </span>
+
+              <h2>
+                Specialists who put
+                <br className="hidden sm:block" />
+                your wellbeing first.
+              </h2>
+
+              <p>
+                Explore doctor profiles and find
+                a consultation that works for you.
+              </p>
+
+            </div>
+
+            <Link
+              to="/doctors"
+              className="section-link"
+            >
+
+              View doctor directory
+
+              <ArrowUpRight className="w-4 h-4" />
+
+            </Link>
+
+          </div>
+
+          {loading ? (
+
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
+
+              {Array.from({ length: 4 }).map((_, index) => (
+                <CardSkeleton key={index} />
+              ))}
+
+            </div>
+
+          ) : featuredDoctors.length > 0 ? (
+
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
+
+              {featuredDoctors.map((doctor) => (
+
+                <DoctorCard
+                  key={doctor._id}
+                  doctor={doctor}
+                />
+
+              ))}
+
+            </div>
+
+          ) : (
+
+            <div className="doctor-empty-panel">
+
+              <div className="doctor-empty-icon">
+                <Stethoscope className="w-6 h-6" />
+              </div>
+
+              <h3>
+                Doctor profiles are being prepared
+              </h3>
+
+              <p>
+                Explore the directory to check available specialists.
+              </p>
+
+              <Link
+                to="/doctors"
+                className="section-link"
+              >
+
+                Open doctor directory
+
+                <ArrowRight className="w-4 h-4" />
+
+              </Link>
+
+            </div>
+
+          )}
+
+        </div>
+
+      </section>
+
+
+      {/* ==================================
+          HOW IT WORKS
+      ================================== */}
+
+      <section className="section-block max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+
+        <div className="workflow-panel">
+
+          <div className="workflow-intro">
+
+            <span className="section-kicker">
+              A CLEARER JOURNEY
+            </span>
+
+            <h2>
+              Three steps.
+              <br />
+              More peace of mind.
+            </h2>
+
+            <p>
+              From finding a specialist to arriving
+              at the clinic, keep each step in one place.
+            </p>
+
+            <Link
+              to="/doctors"
+              className="workflow-cta"
+            >
+
+              Get started
+
+              <MoveRight className="w-4 h-4" />
+
+            </Link>
+
+            <div className="workflow-shield">
+
+              <ShieldPlus className="w-7 h-7" />
+
+              <span>
+                Thoughtful care
+                <br />
+                starts here
+              </span>
+
+            </div>
+
+          </div>
+
+          <div className="workflow-steps">
+
+            <div className="workflow-step">
+
+              <div className="workflow-step-index">
+                01
+              </div>
+
+              <div className="workflow-step-icon">
+                <Search className="w-5 h-5" />
+              </div>
+
+              <div>
+
+                <h3>Discover a doctor</h3>
+
+                <p>
+                  Explore verified doctor profiles, specialties,
+                  consultation fees and available slots.
+                </p>
+
+              </div>
+
+              <span className="workflow-step-line"></span>
+
+            </div>
+
+            <div className="workflow-step">
+
+              <div className="workflow-step-index">
+                02
+              </div>
+
+              <div className="workflow-step-icon">
+                <CalendarCheck className="w-5 h-5" />
+              </div>
+
+              <div>
+
+                <h3>Reserve your visit</h3>
+
+                <p>
+                  Choose a suitable appointment time
+                  and receive your booking details.
+                </p>
+
+              </div>
+
+              <span className="workflow-step-line"></span>
+
+            </div>
+
+            <div className="workflow-step">
+
+              <div className="workflow-step-index">
+                03
+              </div>
+
+              <div className="workflow-step-icon">
+                <ClipboardList className="w-5 h-5" />
+              </div>
+
+              <div>
+
+                <h3>Follow your queue</h3>
+
+                <p>
+                  Check your token status and stay informed
+                  as the clinic queue moves.
+                </p>
+
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </section>
+
+
+      {/* ==================================
+          LIVE QUEUE FEATURE
+      ================================== */}
+
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-20">
+
+        <div className="queue-feature-card">
+
+          <div className="queue-feature-art">
+
+            <div className="queue-art-circle">
+              <Smartphone className="w-10 h-10" />
+            </div>
+
+            <span className="queue-art-dot dot-one"></span>
+
+            <span className="queue-art-dot dot-two"></span>
+
+            <span className="queue-art-dot dot-three"></span>
+
+          </div>
+
+          <div className="queue-feature-content">
+
+            <span className="queue-feature-kicker">
+              LESS GUESSWORK. MORE CLARITY.
+            </span>
+
+            <h2>
+              Your turn, without
+              <br className="hidden sm:block" />
+              the uncertainty.
+            </h2>
+
+            <p>
+              Use the live reception display to follow
+              clinic token progress and help make waiting
+              more predictable.
+            </p>
+
+            <Link
+              to="/queue-display"
+              className="queue-feature-button"
+            >
+
+              Explore live queue
+
+              <ArrowUpRight className="w-4 h-4" />
+
+            </Link>
+
+          </div>
+
+          <div className="queue-feature-watermark">
+            <Activity className="w-44 h-44" />
+          </div>
+
+        </div>
+
+      </section>
+
     </div>
   );
 };

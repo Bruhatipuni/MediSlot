@@ -17,6 +17,7 @@ const seedData = async () => {
     await mongoose.connect(MONGO_URI);
     console.log('[Seed] Connected.');
 
+    // Clear existing collections
     console.log('[Seed] Cleaning existing data...');
     await Promise.all([
       User.deleteMany({}),
@@ -28,6 +29,7 @@ const seedData = async () => {
 
     console.log('[Seed] Creating Users...');
 
+    // 1. Admin User
     const adminUser = await User.create({
       name: 'Dr. Arthur Harris (Chief Admin)',
       email: 'admin@medislot.com',
@@ -39,6 +41,7 @@ const seedData = async () => {
       avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=400',
     });
 
+    // 2. Demo Patients
     const patientRahul = await User.create({
       name: 'Rahul Verma',
       email: 'patient@medislot.com',
@@ -104,13 +107,14 @@ const seedData = async () => {
       avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=400',
     });
 
+    // 3. Doctors List (8 Fictional Doctors across various specializations)
     console.log('[Seed] Creating Doctors and Doctor user accounts...');
 
     const doctorsRaw = [
       {
         user: {
           name: 'Dr. Rajesh Sharma',
-          email: 'doctor@medislot.com',
+          email: 'doctor@medislot.com', // Primary demo doctor login
           password: 'doctor123',
           role: 'doctor',
           phone: '+91 98111 22334',
@@ -392,20 +396,26 @@ const seedData = async () => {
     const docAnita = createdDoctors[2].doctor;
     const docVikram = createdDoctors[3].doctor;
 
+    // Today's date string
     const todayStr = new Date().toISOString().slice(0, 10);
+    // Tomorrow's date string
     const tomorrowObj = new Date();
     tomorrowObj.setDate(tomorrowObj.getDate() + 1);
     const tomorrowStr = tomorrowObj.toISOString().slice(0, 10);
+    // 2 days later
     const dayAfterObj = new Date();
     dayAfterObj.setDate(dayAfterObj.getDate() + 2);
     const dayAfterStr = dayAfterObj.toISOString().slice(0, 10);
 
+    // Yesterday's date string
     const yesterdayObj = new Date();
     yesterdayObj.setDate(yesterdayObj.getDate() - 1);
     const yesterdayStr = yesterdayObj.toISOString().slice(0, 10);
 
     console.log('[Seed] Generating Appointments & Clinic Queues...');
 
+    // 1. Appointments for Dr. Rajesh Sharma (Today)
+    // Token 1: Vikas Reddy - Completed
     const apt1 = await Appointment.create({
       appointmentId: 'MS-20261028-1001',
       patientId: patientVikas._id,
@@ -423,6 +433,7 @@ const seedData = async () => {
       paymentStatus: 'paid',
     });
 
+    // Token 2: Rahul Verma (Our main demo patient) - In Consultation / Called!
     const apt2 = await Appointment.create({
       appointmentId: 'MS-20261028-1002',
       patientId: patientRahul._id,
@@ -437,6 +448,7 @@ const seedData = async () => {
       paymentStatus: 'cash-on-arrival',
     });
 
+    // Token 3: Sneha Roy - Waiting
     const apt3 = await Appointment.create({
       appointmentId: 'MS-20261028-1003',
       patientId: patientSneha._id,
@@ -450,6 +462,7 @@ const seedData = async () => {
       paymentStatus: 'cash-on-arrival',
     });
 
+    // Token 4: Amit Joshi - Waiting
     const apt4 = await Appointment.create({
       appointmentId: 'MS-20261028-1004',
       patientId: patientAmit._id,
@@ -463,6 +476,7 @@ const seedData = async () => {
       paymentStatus: 'cash-on-arrival',
     });
 
+    // Token 5: Ananya Gupta - Waiting
     const apt5 = await Appointment.create({
       appointmentId: 'MS-20261028-1005',
       patientId: patientAnanya._id,
@@ -476,6 +490,7 @@ const seedData = async () => {
       paymentStatus: 'cash-on-arrival',
     });
 
+    // Create Queue for Dr. Rajesh Sharma (Today)
     await Queue.create({
       doctorId: docRajesh._id,
       date: todayStr,
@@ -529,6 +544,7 @@ const seedData = async () => {
       ],
     });
 
+    // 2. Upcoming appointments for demo patient Rahul
     const aptRahulTomorrow = await Appointment.create({
       appointmentId: 'MS-20261029-2001',
       patientId: patientRahul._id,
@@ -560,6 +576,7 @@ const seedData = async () => {
       ],
     });
 
+    // 3. Past Completed Appointment for Rahul (Yesterday) with Dr. Anita Desai
     const aptRahulPast = await Appointment.create({
       appointmentId: 'MS-20261027-3001',
       patientId: patientRahul._id,
@@ -577,8 +594,10 @@ const seedData = async () => {
       paymentStatus: 'paid',
     });
 
+    // Generate Real Sample PDF Reports in server/uploads/reports
     console.log('[Seed] Generating valid Medical Report PDF files with PDFKit...');
 
+    // Report 1: Rahul's Cardiac Lipid & ECG Panel
     const report1Filename = `report-Lipid_ECG_Panel-${Date.now()}-101.pdf`;
     await createPdfReport(
       report1Filename,
@@ -616,6 +635,7 @@ const seedData = async () => {
       notes: 'Reviewed and certified by Dr. Rajesh Sharma. Advised to reduce refined carbohydrates.',
     });
 
+    // Report 2: Rahul's Complete Blood Count (CBC) from Dr. Anita
     const report2Filename = `report-CBC_Influenza_Panel-${Date.now()}-102.pdf`;
     await createPdfReport(
       report2Filename,
@@ -652,6 +672,7 @@ const seedData = async () => {
       notes: 'Normal hemoglobin and platelets. No signs of bacterial superinfection.',
     });
 
+    // Report 3: Sneha Roy's Dermatology Skin Allergy Test
     const report3Filename = `report-Skin_Allergy_Panel-${Date.now()}-103.pdf`;
     await createPdfReport(
       report3Filename,

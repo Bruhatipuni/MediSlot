@@ -45,6 +45,7 @@ const AdminQueues = () => {
 
   return (
     <div className="space-y-6">
+      {/* Header */}
       <div className="bg-white rounded-3xl p-6 sm:p-8 border border-slate-200/80 shadow-soft flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
           <div className="flex items-center gap-2 mb-2">
@@ -81,6 +82,7 @@ const AdminQueues = () => {
         </div>
       </div>
 
+      {/* Queues Grid */}
       {loading ? (
         <TableSkeleton rows={4} />
       ) : queues.length > 0 ? (
@@ -105,6 +107,7 @@ const AdminQueues = () => {
                     </div>
                   </div>
 
+                  {/* Token Status */}
                   <div className="py-5 text-center bg-slate-50 rounded-2xl my-4 border border-slate-100">
                     <p className="text-[10px] uppercase font-bold text-slate-400">Current Token Serving</p>
                     <p className="text-4xl font-black font-mono text-brand-600 mt-1">
@@ -115,6 +118,7 @@ const AdminQueues = () => {
                     </p>
                   </div>
 
+                  {/* Stat Metrics */}
                   <div className="grid grid-cols-3 gap-2 text-center text-xs">
                     <div className="bg-slate-50 p-2.5 rounded-xl border border-slate-100">
                       <span className="text-[10px] text-slate-400 uppercase font-bold">Total</span>

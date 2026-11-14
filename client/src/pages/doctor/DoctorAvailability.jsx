@@ -70,6 +70,7 @@ const DoctorAvailability = () => {
 
   return (
     <div className="max-w-4xl mx-auto space-y-6">
+      {/* Header */}
       <div className="bg-white rounded-3xl p-6 sm:p-8 border border-slate-200/80 shadow-soft">
         <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-brand-50 text-brand-700 text-xs font-semibold border border-brand-200 mb-2">
           <Sliders className="w-3.5 h-3.5" />
@@ -83,7 +84,9 @@ const DoctorAvailability = () => {
         </p>
       </div>
 
+      {/* Main Settings Card */}
       <form onSubmit={handleSave} className="bg-white rounded-3xl p-6 sm:p-8 border border-slate-200/80 shadow-soft space-y-6">
+        {/* Availability Toggle Switch */}
         <div className="p-4 rounded-2xl bg-slate-50 border border-slate-200/80 flex items-center justify-between">
           <div>
             <h4 className="text-sm font-bold text-slate-800">Accept New Appointments</h4>
@@ -114,6 +117,7 @@ const DoctorAvailability = () => {
           </button>
         </div>
 
+        {/* Available Days Checkboxes */}
         <div>
           <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">
             Active Weekly Consultation Days
@@ -139,6 +143,7 @@ const DoctorAvailability = () => {
           </div>
         </div>
 
+        {/* Working Hours */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div>
             <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
@@ -167,6 +172,7 @@ const DoctorAvailability = () => {
           </div>
         </div>
 
+        {/* Slot Duration */}
         <div>
           <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
             Slot Duration per Patient
@@ -186,6 +192,7 @@ const DoctorAvailability = () => {
           </p>
         </div>
 
+        {/* Submit */}
         <div className="pt-3 border-t border-slate-100 flex items-center justify-end">
           <button
             type="submit"

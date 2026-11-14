@@ -27,6 +27,7 @@ const DoctorQueue = () => {
   const [loading, setLoading] = useState(true);
   const [actionLoading, setActionLoading] = useState(false);
 
+  // Consultation Completion Form State
   const [completeModalOpen, setCompleteModalOpen] = useState(false);
   const [consultationNotes, setConsultationNotes] = useState('');
   const [diagnosis, setDiagnosis] = useState('');
@@ -122,6 +123,7 @@ const DoctorQueue = () => {
 
   return (
     <div className="space-y-6">
+      {/* Header */}
       <div className="bg-white rounded-2xl p-5 sm:p-6 border border-slate-200 flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
           <h1 className="text-xl sm:text-2xl font-bold text-slate-900 tracking-tight">
@@ -149,7 +151,9 @@ const DoctorQueue = () => {
         </div>
       </div>
 
+      {/* Top Cockpit */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 items-stretch">
+        {/* CURRENT CHAMBER (7 cols) */}
         <div className="lg:col-span-7 bg-white rounded-2xl p-5 sm:p-6 border border-slate-200 flex flex-col justify-between">
           <div>
             <div className="flex items-center justify-between pb-3 border-b border-slate-100">
@@ -188,6 +192,7 @@ const DoctorQueue = () => {
             )}
           </div>
 
+          {/* Action Buttons */}
           <div className="pt-3 border-t border-slate-100 grid grid-cols-3 gap-2">
             <button
               onClick={handleCallNext}
@@ -218,6 +223,7 @@ const DoctorQueue = () => {
           </div>
         </div>
 
+        {/* METRICS (5 cols) */}
         <div className="lg:col-span-5 bg-white rounded-2xl p-5 sm:p-6 border border-slate-200 flex flex-col justify-between">
           <div>
             <div className="flex items-center justify-between pb-3 border-b border-slate-100">
@@ -273,7 +279,9 @@ const DoctorQueue = () => {
         </div>
       </div>
 
+      {/* Lists */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
+        {/* Waiting List */}
         <div className="bg-white rounded-2xl p-5 border border-slate-200 space-y-3">
           <div className="flex items-center justify-between pb-2 border-b border-slate-100">
             <h3 className="text-sm font-bold text-slate-900">
@@ -316,6 +324,7 @@ const DoctorQueue = () => {
           )}
         </div>
 
+        {/* Completed History */}
         <div className="bg-white rounded-2xl p-5 border border-slate-200 space-y-3">
           <div className="flex items-center justify-between pb-2 border-b border-slate-100">
             <h3 className="text-sm font-bold text-slate-900">
@@ -354,6 +363,7 @@ const DoctorQueue = () => {
         </div>
       </div>
 
+      {/* Complete Modal */}
       <Modal
         isOpen={completeModalOpen}
         onClose={() => setCompleteModalOpen(false)}

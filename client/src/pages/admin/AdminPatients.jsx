@@ -52,6 +52,7 @@ const AdminPatients = () => {
 
   return (
     <div className="space-y-6">
+      {/* Header */}
       <div className="bg-white rounded-3xl p-6 sm:p-8 border border-slate-200/80 shadow-soft flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
           <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900">
@@ -74,6 +75,7 @@ const AdminPatients = () => {
         </div>
       </div>
 
+      {/* Patients Table */}
       {loading ? (
         <TableSkeleton rows={5} />
       ) : patients.length > 0 ? (

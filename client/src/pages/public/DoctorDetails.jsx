@@ -92,6 +92,7 @@ const DoctorDetails = () => {
 
   return (
     <div className="max-w-5xl mx-auto px-4 sm:px-6 py-8 space-y-6">
+      {/* Breadcrumb Navigation */}
       <nav className="flex items-center gap-2 text-xs text-slate-500 font-medium">
         <Link to="/" className="hover:text-slate-800">Home</Link>
         <ChevronRight className="w-3.5 h-3.5 text-slate-400" />
@@ -100,6 +101,7 @@ const DoctorDetails = () => {
         <span className="text-slate-900 font-semibold">{doctor.name}</span>
       </nav>
 
+      {/* Doctor Summary Card */}
       <div className="bg-white rounded-2xl border border-slate-200 p-6 flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
         <div className="flex items-center gap-4">
           <img
@@ -130,6 +132,7 @@ const DoctorDetails = () => {
           </div>
         </div>
 
+        {/* Fee */}
         <div className="text-left md:text-right border-t md:border-t-0 pt-3 md:pt-0 border-slate-100 w-full md:w-auto">
           <p className="text-[11px] text-slate-400 uppercase font-semibold">Consultation Fee</p>
           <p className="text-2xl font-bold text-slate-900">₹{doctor.consultationFee}</p>
@@ -137,7 +140,9 @@ const DoctorDetails = () => {
         </div>
       </div>
 
+      {/* Grid: Doctor Info on Left, Slot Selector on Right */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+        {/* Left Column (7 cols): Bio & Practice Location */}
         <div className="lg:col-span-7 space-y-5">
           <div className="bg-white rounded-2xl border border-slate-200 p-5 space-y-3">
             <h3 className="text-sm font-bold text-slate-900">About Doctor</h3>
@@ -163,12 +168,14 @@ const DoctorDetails = () => {
           </div>
         </div>
 
+        {/* Right Column (5 cols): Clean Slot Picker */}
         <div className="lg:col-span-5 bg-white rounded-2xl border border-slate-200 p-5 space-y-4">
           <div className="flex items-center justify-between">
             <h3 className="text-sm font-bold text-slate-900">Select Date & Time</h3>
             <span className="text-xs text-slate-400">Step 1 of 2</span>
           </div>
 
+          {/* Date Picker Input */}
           <div>
             <label className="block text-[11px] font-bold uppercase tracking-wider text-slate-500 mb-1">
               Date
@@ -182,6 +189,7 @@ const DoctorDetails = () => {
             />
           </div>
 
+          {/* Slot Grid */}
           <div className="space-y-2">
             <div className="flex items-center justify-between text-xs text-slate-500">
               <span className="font-semibold text-slate-700">Available Slots</span>
@@ -221,6 +229,7 @@ const DoctorDetails = () => {
             )}
           </div>
 
+          {/* Proceed Button */}
           <div className="pt-2 border-t border-slate-100 space-y-2">
             {selectedSlot && (
               <p className="text-xs text-brand-600 font-semibold text-center">

@@ -51,8 +51,9 @@ const Register = () => {
   };
 
   return (
-    <div className="min-h-[calc(100vh-12rem)] flex items-center justify-center p-4 sm:p-6">
+    <div className="auth-stage min-h-[calc(100vh-12rem)] flex items-center justify-center p-4 sm:p-6">
       <div className="w-full max-w-lg space-y-6">
+        {/* Header */}
         <div className="text-center space-y-1.5">
           <div className="w-10 h-10 rounded-xl bg-brand-600 text-white flex items-center justify-center mx-auto mb-3 shadow-xs">
             <Activity className="w-5 h-5" />
@@ -65,7 +66,8 @@ const Register = () => {
           </p>
         </div>
 
-        <div className="bg-white p-6 sm:p-7 rounded-2xl border border-slate-200 shadow-sm">
+        {/* Card */}
+        <div className="auth-panel bg-white p-6 sm:p-7 rounded-2xl border border-slate-200 shadow-sm">
           <form onSubmit={handleSubmit} noValidate className="space-y-4">
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
               <FormField
