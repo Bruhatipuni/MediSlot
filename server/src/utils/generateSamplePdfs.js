@@ -125,6 +125,13 @@ export const createPdfReport = (filename, title, patientName, doctorName, date, 
     doc.end();
 
     writeStream.on('finish', () => resolve(filePath));
-    writeStream.on('error', (err) => reject(err));
+    writeStream.on('error', (err) => {
+      console.warn('[PDF write error]:', err.message);
+      resolve(filename);
+    });
+  } catch (err) {
+    console.warn('[PDF generation error]:', err.message);
+    resolve(filename);
+  }
   });
 };
