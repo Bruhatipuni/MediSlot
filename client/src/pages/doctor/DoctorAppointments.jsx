@@ -54,6 +54,8 @@ const DoctorAppointments = () => {
 
   useEffect(() => {
     fetchAppointments();
+    const interval = setInterval(fetchAppointments, 8000);
+    return () => clearInterval(interval);
   }, [statusFilter, selectedDate]);
 
   const handleSearchSubmit = (e) => {

@@ -199,11 +199,11 @@ const AdminDoctors = () => {
                       <span
                         className={`inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-bold ${
                           doc.isActive
-                            ? 'bg-emerald-50 text-emerald-700 border border-emerald-300'
+                            ? 'bg-brand-50 text-brand-700 border border-brand-300'
                             : 'bg-rose-50 text-rose-700 border border-rose-200'
                         }`}
                       >
-                        <span className={`w-1.5 h-1.5 rounded-full ${doc.isActive ? 'bg-emerald-500' : 'bg-rose-500'}`} />
+                        <span className={`w-1.5 h-1.5 rounded-full ${doc.isActive ? 'bg-brand-500' : 'bg-rose-500'}`} />
                         {doc.isActive ? 'Active' : 'Deactivated'}
                       </span>
                     </td>
@@ -214,7 +214,7 @@ const AdminDoctors = () => {
                         className={`px-3 py-1.5 rounded-xl text-xs font-semibold border transition-all ${
                           doc.isActive
                             ? 'bg-rose-50 text-rose-700 border-rose-200 hover:bg-rose-100'
-                            : 'bg-emerald-50 text-emerald-700 border-emerald-200 hover:bg-emerald-100'
+                            : 'bg-brand-50 text-brand-700 border-brand-200 hover:bg-brand-100'
                         }`}
                       >
                         {doc.isActive ? 'Deactivate' : 'Reactivate'}

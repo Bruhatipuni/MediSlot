@@ -80,7 +80,7 @@ const QueueDisplay = () => {
 
           <div className="flex items-center gap-4">
             <div className="text-right hidden sm:block">
-              <p className="text-xl font-bold font-mono text-emerald-400">
+              <p className="text-xl font-bold font-mono text-purple-400">
                 {currentTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' })}
               </p>
               <p className="text-[11px] text-slate-400">
@@ -137,7 +137,7 @@ const QueueDisplay = () => {
                         <p className="text-[10px] uppercase font-bold tracking-wider text-slate-400 mb-1">
                           Now Serving
                         </p>
-                        <p className="text-5xl font-black font-mono text-emerald-400 tracking-tight">
+                        <p className="text-5xl font-black font-mono text-purple-400 tracking-tight">
                           {item.currentToken > 0 ? `#${item.currentToken < 10 ? '0' : ''}${item.currentToken}` : '--'}
                         </p>
                         <p className="text-xs text-slate-300 mt-2 truncate px-1">

@@ -460,7 +460,7 @@ const PatientAppointments = () => {
                 <p className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-1">
                   Clinical Diagnosis
                 </p>
-                <p className="p-3 bg-emerald-50 text-emerald-900 rounded-xl text-xs font-medium border border-emerald-200">
+                <p className="p-3 bg-brand-50 text-brand-900 rounded-xl text-xs font-medium border border-brand-200">
                   {viewAppointment.diagnosis}
                 </p>
               </div>

@@ -103,7 +103,7 @@ const AdminDashboard = () => {
           <p className="text-2xl font-bold text-slate-900 font-mono mt-1">
             {stats?.totalDoctors || 0}
           </p>
-          <p className="text-[11px] text-emerald-600 font-medium mt-0.5">
+          <p className="text-[11px] text-brand-600 font-medium mt-0.5">
             {stats?.activeDoctors || 0} active
           </p>
         </div>

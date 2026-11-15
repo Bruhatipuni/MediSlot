@@ -71,7 +71,15 @@ const PatientDashboard = () => {
     ['scheduled', 'in-queue', 'in-consultation'].includes(a.status)
   );
 
-  const activeTodayToken = tokenStatuses.length > 0 ? tokenStatuses[0] : null;
+  const todayStr = new Date().toISOString().slice(0, 10);
+  // Prefer token for today; otherwise show the closest upcoming token
+  const activeTodayToken = tokenStatuses.find((t) => t.date === todayStr) || tokenStatuses[0] || null;
+  const isTodayToken = activeTodayToken?.date === todayStr;
+
+  const formatDoctorName = (name) => {
+    if (!name) return '';
+    return name.startsWith('Dr.') || name.startsWith('Dr ') ? name : `Dr. ${name}`;
+  };
 
   return (
     <div className="space-y-6">
@@ -146,14 +154,14 @@ const PatientDashboard = () => {
         <div className="bg-white rounded-2xl p-5 border border-slate-200 space-y-4">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
             <div>
-              <span className="text-[11px] font-bold text-brand-600 uppercase tracking-wider">
-                Today's Clinic Queue
+              <span className={`text-[11px] font-bold uppercase tracking-wider ${isTodayToken ? 'text-brand-600' : 'text-amber-600'}`}>
+                {isTodayToken ? "Today's Clinic Queue" : `Upcoming Clinic Queue • ${activeTodayToken.date}`}
               </span>
               <h3 className="text-base font-bold text-slate-900 mt-0.5">
-                Dr. {activeTodayToken.doctor?.name} ({activeTodayToken.doctor?.specialization})
+                {formatDoctorName(activeTodayToken.doctor?.name)} ({activeTodayToken.doctor?.specialization})
               </h3>
               <p className="text-xs text-slate-500">
-                Scheduled Slot: {activeTodayToken.timeSlot} · Appointment Code: {activeTodayToken.appointmentCode}
+                Date: <strong className="text-slate-700">{activeTodayToken.date}</strong> · Slot: {activeTodayToken.timeSlot} · Appointment Code: {activeTodayToken.appointmentCode}
               </p>
             </div>
 
@@ -166,7 +174,7 @@ const PatientDashboard = () => {
               </div>
               <div className="text-center">
                 <p className="text-[10px] text-slate-400 uppercase font-semibold">Now Serving</p>
-                <p className="text-2xl font-bold font-mono text-emerald-600">
+                <p className="text-2xl font-bold font-mono text-brand-600">
                   {activeTodayToken.currentTokenBeingServed > 0 ? `#${activeTodayToken.currentTokenBeingServed}` : '—'}
                 </p>
               </div>

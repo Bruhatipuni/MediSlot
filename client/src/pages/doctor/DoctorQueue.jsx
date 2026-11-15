@@ -161,7 +161,7 @@ const DoctorQueue = () => {
                 Current Consultation
               </span>
               {currentPatient && (
-                <span className="text-xs font-mono font-bold text-emerald-700 bg-emerald-50 px-2.5 py-0.5 rounded-md border border-emerald-200">
+                <span className="text-xs font-mono font-bold text-brand-700 bg-brand-50 px-2.5 py-0.5 rounded-md border border-brand-200">
                   Token #{currentPatient.tokenNumber}
                 </span>
               )}
@@ -215,7 +215,7 @@ const DoctorQueue = () => {
             <button
               onClick={handleOpenCompleteModal}
               disabled={actionLoading || !currentPatient}
-              className="py-2.5 px-3 bg-emerald-600 hover:bg-emerald-700 disabled:opacity-40 text-white text-xs font-semibold rounded-xl transition-colors flex items-center justify-center gap-1.5"
+              className="py-2.5 px-3 bg-brand-600 hover:bg-brand-700 disabled:opacity-40 text-white text-xs font-semibold rounded-xl transition-colors flex items-center justify-center gap-1.5"
             >
               <Check className="w-3.5 h-3.5" />
               <span>Complete</span>
@@ -250,7 +250,7 @@ const DoctorQueue = () => {
 
               <div className="bg-slate-50 p-3 rounded-xl text-center">
                 <p className="text-[10px] uppercase font-bold text-slate-400">Completed</p>
-                <p className="text-2xl font-bold font-mono text-emerald-600 mt-0.5">
+                <p className="text-2xl font-bold font-mono text-brand-600 mt-0.5">
                   {queueData?.completedCount || 0}
                 </p>
               </div>
@@ -456,7 +456,7 @@ const DoctorQueue = () => {
             <button
               onClick={handleConfirmComplete}
               disabled={actionLoading}
-              className="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white font-semibold rounded-lg"
+              className="px-4 py-2 bg-brand-600 hover:bg-brand-700 text-white font-semibold rounded-lg"
             >
               {actionLoading ? 'Saving...' : 'Finish Consultation'}
             </button>

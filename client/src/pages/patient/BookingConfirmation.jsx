@@ -73,7 +73,7 @@ const BookingConfirmation = () => {
       {/* Main Boarding Pass / Clinical Slip */}
       <div className="bg-white rounded-3xl border border-slate-200/80 shadow-soft overflow-hidden print:shadow-none print:border-slate-300">
         {/* Top Header Banner */}
-        <div className="bg-gradient-to-r from-brand-600 to-medteal-600 text-white p-6 sm:p-8 text-center relative overflow-hidden">
+        <div className="bg-gradient-to-r from-brand-600 to-purple-800 text-white p-6 sm:p-8 text-center relative overflow-hidden">
           <div className="w-14 h-14 rounded-2xl bg-white/20 backdrop-blur-md text-white flex items-center justify-center mx-auto mb-3 shadow-sm border border-white/30">
             <CheckCircle2 className="w-8 h-8" />
           </div>
@@ -90,7 +90,7 @@ const BookingConfirmation = () => {
 
         {/* Digital Token Section */}
         <div className="p-6 sm:p-8 space-y-6">
-          <div className="p-6 rounded-3xl bg-gradient-to-br from-brand-50 to-medteal-50/50 border border-brand-200/80 text-center relative overflow-hidden">
+          <div className="p-6 rounded-3xl bg-gradient-to-br from-brand-50 to-purple-100/50 border border-brand-200/80 text-center relative overflow-hidden">
             <p className="text-[11px] font-extrabold uppercase tracking-widest text-brand-700">
               Assigned Queue Token
             </p>
@@ -145,12 +145,12 @@ const BookingConfirmation = () => {
             </div>
 
             {/* Check-in Guidance */}
-            <div className="p-4 bg-emerald-50/70 border border-emerald-200/70 rounded-2xl text-emerald-900 space-y-1">
+            <div className="p-4 bg-purple-50/70 border border-purple-200/70 rounded-2xl text-purple-900 space-y-1">
               <p className="font-bold flex items-center gap-1.5 text-xs">
-                <ShieldCheck className="w-4 h-4 text-emerald-600" />
+                <ShieldCheck className="w-4 h-4 text-purple-600" />
                 Clinic Check-in Instructions:
               </p>
-              <p className="text-[11px] leading-relaxed text-emerald-800">
+              <p className="text-[11px] leading-relaxed text-purple-800">
                 Please report to the OPD nursing desk 10-15 minutes prior to slot time ({appointment.timeSlot}). Display this confirmation slip or state your Token <strong>#{appointment.tokenNumber}</strong>.
               </p>
             </div>

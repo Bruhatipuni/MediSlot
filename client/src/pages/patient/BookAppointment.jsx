@@ -217,7 +217,7 @@ const BookAppointment = () => {
             </div>
 
             <div className="flex items-center gap-2.5 p-3.5 bg-slate-50 rounded-2xl border border-slate-100">
-              <Clock className="w-4 h-4 text-medteal-600 flex-shrink-0" />
+              <Clock className="w-4 h-4 text-brand-600 flex-shrink-0" />
               <span>
                 Hours: <strong className="text-slate-800">{doctor.workingHours?.start} - {doctor.workingHours?.end}</strong> ({doctor.slotDurationMinutes}m slots)
               </span>

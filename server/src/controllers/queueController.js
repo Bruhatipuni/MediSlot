@@ -150,9 +150,10 @@ export const getPatientTokenStatus = async (req, res, next) => {
   try {
     const todayStr = new Date().toISOString().slice(0, 10);
 
-    // Find patient's appointment for today (or upcoming)
+    // Find patient's appointment for today or upcoming (ignore past dates)
     const appointments = await Appointment.find({
       patientId: req.user._id,
+      date: { $gte: todayStr },
       status: { $in: ['scheduled', 'in-queue', 'in-consultation'] },
     })
       .populate('doctorId', 'name specialization consultationFee clinicAddress hospitalAffiliation avatar slotDurationMinutes')

@@ -397,7 +397,7 @@ const departmentList = [
     label: 'General care',
     icon: Stethoscope,
     detail: 'Everyday healthcare',
-    tint: 'teal',
+    tint: 'purple',
   },
 ];
 
@@ -768,7 +768,7 @@ const Home = () => {
 
           <div className="benefit-item">
 
-            <div className="benefit-icon teal">
+            <div className="benefit-icon violet">
               <Clock3 className="w-5 h-5" />
             </div>
 

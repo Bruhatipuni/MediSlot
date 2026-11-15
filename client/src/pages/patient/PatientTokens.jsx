@@ -50,8 +50,8 @@ const PatientTokens = () => {
       <div className="bg-white rounded-3xl p-6 sm:p-8 border border-slate-200/80 shadow-soft flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
           <div className="flex items-center gap-2 mb-2">
-            <span className="px-3 py-1 rounded-full text-xs font-bold uppercase bg-emerald-50 text-emerald-700 border border-emerald-200 flex items-center gap-1.5 shadow-xs">
-              <span className="w-2 h-2 rounded-full bg-emerald-500 animate-ping" />
+            <span className="px-3 py-1 rounded-full text-xs font-bold uppercase bg-brand-50 text-brand-700 border border-brand-200 flex items-center gap-1.5 shadow-xs">
+              <span className="w-2 h-2 rounded-full bg-brand-500 animate-ping" />
               Live Queue Polling
             </span>
             <span className="text-xs text-slate-400 font-mono">
@@ -78,7 +78,7 @@ const PatientTokens = () => {
             to="/queue-display"
             className="inline-flex items-center gap-2 px-4 py-2.5 bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold rounded-2xl shadow-sm transition-all"
           >
-            <Tv className="w-4 h-4 text-emerald-400" />
+            <Tv className="w-4 h-4 text-brand-400" />
             <span>Lobby TV View</span>
           </Link>
         </div>
@@ -109,7 +109,7 @@ const PatientTokens = () => {
                       <span
                         className={`text-[10px] font-bold uppercase tracking-wider px-2.5 py-0.5 rounded-full ${
                           isCurrentlyServingMe
-                            ? 'bg-emerald-400/20 text-emerald-300 border border-emerald-400/30'
+                            ? 'bg-brand-400/20 text-brand-300 border border-brand-400/30'
                             : 'bg-brand-50 text-brand-700 border border-brand-200'
                         }`}
                       >
@@ -142,8 +142,8 @@ const PatientTokens = () => {
                     </div>
 
                     {isCurrentlyServingMe && (
-                      <div className="p-3.5 bg-emerald-500/15 border border-emerald-500/30 rounded-2xl text-xs text-emerald-300 flex items-center gap-2.5 animate-pulse">
-                        <Activity className="w-4 h-4 flex-shrink-0 text-emerald-400" />
+                      <div className="p-3.5 bg-brand-500/15 border border-brand-500/30 rounded-2xl text-xs text-brand-300 flex items-center gap-2.5 animate-pulse">
+                        <Activity className="w-4 h-4 flex-shrink-0 text-brand-400" />
                         <span className="font-bold">It is your turn! Please report to the consultation chamber immediately.</span>
                       </div>
                     )}
@@ -182,7 +182,7 @@ const PatientTokens = () => {
                         <p className="text-[10px] font-bold uppercase tracking-wider opacity-70">
                           Now Serving
                         </p>
-                        <p className="text-xl font-black font-mono text-emerald-500">
+                        <p className="text-xl font-black font-mono text-brand-600">
                           {item.currentTokenBeingServed > 0 ? `#${item.currentTokenBeingServed}` : 'Idle'}
                         </p>
                       </div>

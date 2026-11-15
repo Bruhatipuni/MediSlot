@@ -49,8 +49,8 @@ const AdminQueues = () => {
       <div className="bg-white rounded-3xl p-6 sm:p-8 border border-slate-200/80 shadow-soft flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
           <div className="flex items-center gap-2 mb-2">
-            <span className="px-3 py-1 rounded-full text-xs font-bold uppercase bg-emerald-50 text-emerald-700 border border-emerald-200 flex items-center gap-1.5">
-              <span className="w-2 h-2 rounded-full bg-emerald-500 animate-ping" />
+            <span className="px-3 py-1 rounded-full text-xs font-bold uppercase bg-brand-50 text-brand-700 border border-brand-200 flex items-center gap-1.5">
+              <span className="w-2 h-2 rounded-full bg-brand-500 animate-ping" />
               Live Clinic Network Telemetry
             </span>
             <span className="text-xs text-slate-400 font-mono">
@@ -76,7 +76,7 @@ const AdminQueues = () => {
             to="/queue-display"
             className="inline-flex items-center gap-1.5 px-4 py-2.5 bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold rounded-xl shadow-sm transition-all"
           >
-            <Tv className="w-4 h-4 text-emerald-400" />
+            <Tv className="w-4 h-4 text-brand-400" />
             <span>Launch Lobby TV Board</span>
           </Link>
         </div>
@@ -132,9 +132,9 @@ const AdminQueues = () => {
                         {item.waitingCount}
                       </p>
                     </div>
-                    <div className="bg-emerald-50 p-2.5 rounded-xl border border-emerald-200">
-                      <span className="text-[10px] text-emerald-700 uppercase font-bold">Done</span>
-                      <p className="font-bold text-emerald-800 text-sm font-mono mt-0.5">
+                    <div className="bg-brand-50 p-2.5 rounded-xl border border-brand-200">
+                      <span className="text-[10px] text-brand-700 uppercase font-bold">Done</span>
+                      <p className="font-bold text-brand-800 text-sm font-mono mt-0.5">
                         {item.completedCount}
                       </p>
                     </div>

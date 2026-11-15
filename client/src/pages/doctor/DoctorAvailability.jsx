@@ -99,13 +99,13 @@ const DoctorAvailability = () => {
             onClick={() => setIsAvailable(!isAvailable)}
             className={`p-2 rounded-2xl flex items-center gap-2 font-bold text-xs transition-all ${
               isAvailable
-                ? 'bg-emerald-50 text-emerald-700 border border-emerald-300'
+                ? 'bg-brand-50 text-brand-700 border border-brand-300'
                 : 'bg-slate-200 text-slate-600'
             }`}
           >
             {isAvailable ? (
               <>
-                <ToggleRight className="w-6 h-6 text-emerald-600" />
+                <ToggleRight className="w-6 h-6 text-brand-600" />
                 <span>Available</span>
               </>
             ) : (
