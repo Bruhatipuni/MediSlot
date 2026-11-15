@@ -75,7 +75,16 @@ export const AuthProvider = ({ children }) => {
         return { success: true, user: data.user };
       }
     } catch (error) {
-      const message = error.response?.data?.message || 'Invalid email or password.';
+      console.error('Login error details:', error);
+      const message =
+        error.response?.data?.message ||
+        (error.response?.status === 404
+          ? 'API endpoint /api/auth/login not found (404).'
+          : error.response?.status
+          ? `Server error (${error.response.status})`
+          : null) ||
+        (!error.response ? 'Cannot reach server. Please check your network connection.' : null) ||
+        'Invalid email or password.';
       toast.error(message);
       return { success: false, message };
     }
