@@ -53,5 +53,3 @@ export const uploadReport = multer({
   },
   fileFilter,
 });
-
-export const reportsStorageDir = reportsDir;
