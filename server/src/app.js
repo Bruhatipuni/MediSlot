@@ -1,6 +1,7 @@
 import express from 'express';
 import cors from 'cors';
 import morgan from 'morgan';
+import connectDB from './config/db.js';
 import authRoutes from './routes/authRoutes.js';
 import doctorRoutes from './routes/doctorRoutes.js';
 import appointmentRoutes from './routes/appointmentRoutes.js';
@@ -14,7 +15,7 @@ const app = express();
 // Middlewares
 app.use(
   cors({
-    origin: process.env.CLIENT_URL || 'http://localhost:5173',
+    origin: process.env.CLIENT_URL ? [process.env.CLIENT_URL, 'http://localhost:5173'] : true,
     credentials: true,
   })
 );
@@ -24,6 +25,20 @@ app.use(express.urlencoded({ extended: true }));
 if (process.env.NODE_ENV !== 'test') {
   app.use(morgan('dev'));
 }
+
+// Auto-connect to MongoDB for serverless / Vercel execution
+app.use(async (req, res, next) => {
+  try {
+    await connectDB();
+    next();
+  } catch (err) {
+    console.error('[DB Middleware Error]:', err.message);
+    res.status(500).json({
+      success: false,
+      message: 'Database connection failed. Please ensure MONGO_URI is set in environment variables.',
+    });
+  }
+});
 
 // Health check endpoint
 app.get('/api/health', (req, res) => {
