@@ -3,15 +3,17 @@ import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
 import {
   Activity,
-  User,
+  UserRound,
   LogOut,
   LayoutDashboard,
-  Calendar,
+  CalendarDays,
   Tv,
   Menu,
   X,
   ChevronDown,
-  Clock,
+  Clock3,
+  Stethoscope,
+  ArrowUpRight,
 } from 'lucide-react';
 
 const Navbar = () => {
@@ -23,6 +25,8 @@ const Navbar = () => {
 
   const handleLogout = () => {
     logout();
+    setDropdownOpen(false);
+    setMobileMenuOpen(false);
     navigate('/login');
   };
 
@@ -34,237 +38,109 @@ const Navbar = () => {
   };
 
   const isActive = (path) => location.pathname === path;
+  const navClass = (path) => `nav-link ${isActive(path) ? 'nav-link-active' : ''}`;
+  const closeMobile = () => setMobileMenuOpen(false);
 
   return (
-    <header className="sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b border-slate-200 transition-colors">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-16">
-          <Link to="/" className="flex items-center gap-2.5">
-            <div className="w-9 h-9 rounded-xl bg-brand-600 flex items-center justify-center text-white shadow-xs">
-              <Activity className="w-5 h-5" />
+    <header className="site-header">
+      <div className="site-header-inner">
+        <Link to="/" className="site-brand" onClick={closeMobile} aria-label="MediSlot home">
+          <span className="site-brand-icon"><Activity className="w-5 h-5" strokeWidth={2.5} /></span>
+          <span className="site-brand-name">Medi<span>Slot</span><small>CARE, CONNECTED</small></span>
+        </Link>
+
+        <nav className="desktop-nav" aria-label="Main navigation">
+          <Link to="/" className={navClass('/')}>Home</Link>
+          <Link to="/doctors" className={navClass('/doctors')}><Stethoscope className="w-3.5 h-3.5" /> Find doctors</Link>
+          <Link to="/queue-display" className={navClass('/queue-display')}><Tv className="w-3.5 h-3.5" /> Queue display</Link>
+        </nav>
+
+        <div className="desktop-nav-actions">
+          {isAuthenticated ? (
+            <div className="relative">
+              <button
+                type="button"
+                onClick={() => setDropdownOpen((open) => !open)}
+                className={`user-menu-trigger ${dropdownOpen ? 'user-menu-trigger-open' : ''}`}
+                aria-expanded={dropdownOpen}
+                aria-haspopup="menu"
+              >
+                <img
+                  src={user.avatar || `https://api.dicebear.com/7.x/personas/svg?seed=${encodeURIComponent(user.name)}`}
+                  alt=""
+                  className="user-menu-avatar"
+                />
+                <span className="user-menu-copy"><strong>{user.name}</strong><small>{user.role} account</small></span>
+                <ChevronDown className={`w-4 h-4 user-menu-chevron ${dropdownOpen ? 'rotate-180' : ''}`} />
+              </button>
+
+              {dropdownOpen && (
+                <>
+                  <button className="dropdown-backdrop" onClick={() => setDropdownOpen(false)} aria-label="Close account menu" />
+                  <div className="user-dropdown" role="menu">
+                    <div className="user-dropdown-head">
+                      <p>{user.name}</p>
+                      <span>{user.email}</span>
+                    </div>
+                    <Link to={getDashboardLink()} role="menuitem" onClick={() => setDropdownOpen(false)}><LayoutDashboard className="w-4 h-4" /> Dashboard <ArrowUpRight className="w-3.5 h-3.5 ml-auto" /></Link>
+                    {user.role === 'patient' && (
+                      <>
+                        <Link to="/patient/appointments" role="menuitem" onClick={() => setDropdownOpen(false)}><CalendarDays className="w-4 h-4" /> My appointments</Link>
+                        <Link to="/patient/tokens" role="menuitem" onClick={() => setDropdownOpen(false)}><Clock3 className="w-4 h-4" /> Queue status</Link>
+                      </>
+                    )}
+                    {user.role === 'doctor' && <Link to="/doctor/queue" role="menuitem" onClick={() => setDropdownOpen(false)}><Clock3 className="w-4 h-4" /> Queue manager</Link>}
+                    <Link
+                      to={user.role === 'doctor' ? '/doctor/profile' : user.role === 'admin' ? '/admin/dashboard' : '/patient/profile'}
+                      role="menuitem"
+                      onClick={() => setDropdownOpen(false)}
+                    ><UserRound className="w-4 h-4" /> Profile</Link>
+                    <div className="user-dropdown-divider" />
+                    <button type="button" onClick={handleLogout} className="user-dropdown-logout"><LogOut className="w-4 h-4" /> Sign out</button>
+                  </div>
+                </>
+              )}
             </div>
-            <span className="text-xl font-bold tracking-tight text-slate-900">
-              MediSlot
-            </span>
-          </Link>
-
-          <nav className="hidden md:flex items-center gap-6 text-sm font-medium">
-            <Link
-              to="/"
-              className={`transition-colors ${
-                isActive('/') ? 'text-brand-600 font-semibold' : 'text-slate-600 hover:text-slate-900'
-              }`}
-            >
-              Home
-            </Link>
-            <Link
-              to="/doctors"
-              className={`transition-colors ${
-                isActive('/doctors') ? 'text-brand-600 font-semibold' : 'text-slate-600 hover:text-slate-900'
-              }`}
-            >
-              Find Doctors
-            </Link>
-            <Link
-              to="/queue-display"
-              className={`flex items-center gap-1.5 transition-colors ${
-                isActive('/queue-display') ? 'text-brand-600 font-semibold' : 'text-slate-600 hover:text-slate-900'
-              }`}
-            >
-              <Tv className="w-4 h-4 text-slate-400" />
-              <span>Reception Display</span>
-            </Link>
-          </nav>
-
-          <div className="hidden md:flex items-center gap-3">
-            {isAuthenticated ? (
-              <div className="relative">
-                <button
-                  onClick={() => setDropdownOpen(!dropdownOpen)}
-                  className="flex items-center gap-2.5 py-1.5 px-2.5 rounded-xl border border-slate-200 hover:border-slate-300 hover:bg-slate-50 transition-all text-left"
-                >
-                  <img
-                    src={user.avatar || `https://api.dicebear.com/7.x/personas/svg?seed=${encodeURIComponent(user.name)}`}
-                    alt={user.name}
-                    className="w-7 h-7 rounded-lg object-cover bg-slate-100 border border-slate-200"
-                  />
-                  <div className="leading-tight">
-                    <p className="text-xs font-semibold text-slate-800 line-clamp-1">{user.name}</p>
-                    <p className="text-[10px] text-slate-400 capitalize">{user.role}</p>
-                  </div>
-                  <ChevronDown className="w-3.5 h-3.5 text-slate-400" />
-                </button>
-
-                {dropdownOpen && (
-                  <div
-                    onMouseLeave={() => setDropdownOpen(false)}
-                    className="absolute right-0 mt-2 w-56 bg-white rounded-2xl shadow-lg border border-slate-200 py-2 z-50"
-                  >
-                    <div className="px-3.5 py-2 border-b border-slate-100">
-                      <p className="text-xs font-semibold text-slate-900 truncate">{user.name}</p>
-                      <p className="text-[11px] text-slate-500 truncate">{user.email}</p>
-                    </div>
-
-                    <div className="py-1 text-xs">
-                      <Link
-                        to={getDashboardLink()}
-                        onClick={() => setDropdownOpen(false)}
-                        className="flex items-center gap-2 px-3.5 py-2 text-slate-700 hover:bg-slate-50 hover:text-brand-600"
-                      >
-                        <LayoutDashboard className="w-4 h-4 text-slate-400" />
-                        <span>Dashboard</span>
-                      </Link>
-                      {user.role === 'patient' && (
-                        <>
-                          <Link
-                            to="/patient/appointments"
-                            onClick={() => setDropdownOpen(false)}
-                            className="flex items-center gap-2 px-3.5 py-2 text-slate-700 hover:bg-slate-50 hover:text-brand-600"
-                          >
-                            <Calendar className="w-4 h-4 text-slate-400" />
-                            <span>My Appointments</span>
-                          </Link>
-                          <Link
-                            to="/patient/tokens"
-                            onClick={() => setDropdownOpen(false)}
-                            className="flex items-center gap-2 px-3.5 py-2 text-slate-700 hover:bg-slate-50 hover:text-brand-600"
-                          >
-                            <Clock className="w-4 h-4 text-slate-400" />
-                            <span>Queue Status</span>
-                          </Link>
-                        </>
-                      )}
-                      {user.role === 'doctor' && (
-                        <Link
-                          to="/doctor/queue"
-                          onClick={() => setDropdownOpen(false)}
-                          className="flex items-center gap-2 px-3.5 py-2 text-slate-700 hover:bg-slate-50 hover:text-brand-600"
-                        >
-                          <Clock className="w-4 h-4 text-slate-400" />
-                          <span>Queue Manager</span>
-                        </Link>
-                      )}
-                      <Link
-                        to={
-                          user.role === 'doctor'
-                            ? '/doctor/profile'
-                            : user.role === 'admin'
-                            ? '/admin/dashboard'
-                            : '/patient/profile'
-                        }
-                        onClick={() => setDropdownOpen(false)}
-                        className="flex items-center gap-2 px-3.5 py-2 text-slate-700 hover:bg-slate-50 hover:text-brand-600"
-                      >
-                        <User className="w-4 h-4 text-slate-400" />
-                        <span>Profile</span>
-                      </Link>
-                    </div>
-
-                    <div className="border-t border-slate-100 pt-1 mt-1">
-                      <button
-                        onClick={handleLogout}
-                        className="flex w-full items-center gap-2 px-3.5 py-2 text-xs font-semibold text-rose-600 hover:bg-rose-50"
-                      >
-                        <LogOut className="w-4 h-4" />
-                        <span>Sign Out</span>
-                      </button>
-                    </div>
-                  </div>
-                )}
-              </div>
-            ) : (
-              <div className="flex items-center gap-2">
-                <Link
-                  to="/login"
-                  className="px-3.5 py-2 text-xs font-semibold text-slate-700 hover:text-slate-900 rounded-lg hover:bg-slate-50 transition-colors"
-                >
-                  Sign In
-                </Link>
-                <Link
-                  to="/register"
-                  className="px-4 py-2 text-xs font-semibold text-white bg-brand-600 hover:bg-brand-700 rounded-lg transition-colors shadow-xs"
-                >
-                  Register
-                </Link>
-              </div>
-            )}
-          </div>
-
-          <div className="flex md:hidden items-center">
-            <button
-              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="p-2 rounded-lg text-slate-600 hover:bg-slate-100"
-            >
-              {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
-            </button>
-          </div>
+          ) : (
+            <>
+              <Link to="/login" className="nav-signin">Sign in</Link>
+              <Link to="/register" className="nav-register">Get started <ArrowUpRight className="w-3.5 h-3.5" /></Link>
+            </>
+          )}
         </div>
+
+        <button
+          type="button"
+          className="mobile-menu-toggle"
+          onClick={() => setMobileMenuOpen((open) => !open)}
+          aria-label={mobileMenuOpen ? 'Close navigation menu' : 'Open navigation menu'}
+          aria-expanded={mobileMenuOpen}
+        >
+          {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+        </button>
       </div>
 
       {mobileMenuOpen && (
-        <div className="md:hidden border-t border-slate-200 bg-white px-4 py-4 space-y-2">
-          <Link
-            to="/"
-            onClick={() => setMobileMenuOpen(false)}
-            className="block px-3 py-2 rounded-lg text-sm font-medium text-slate-700 hover:bg-slate-50"
-          >
-            Home
-          </Link>
-          <Link
-            to="/doctors"
-            onClick={() => setMobileMenuOpen(false)}
-            className="block px-3 py-2 rounded-lg text-sm font-medium text-slate-700 hover:bg-slate-50"
-          >
-            Find Doctors
-          </Link>
-          <Link
-            to="/queue-display"
-            onClick={() => setMobileMenuOpen(false)}
-            className="block px-3 py-2 rounded-lg text-sm font-medium text-slate-700 hover:bg-slate-50"
-          >
-            Reception Display
-          </Link>
-
-          <div className="border-t border-slate-100 pt-3">
-            {isAuthenticated ? (
-              <div className="space-y-1">
-                <div className="px-3 py-1.5 mb-2">
-                  <p className="text-sm font-bold text-slate-900">{user.name}</p>
-                  <p className="text-xs text-slate-400 capitalize">{user.role}</p>
-                </div>
-                <Link
-                  to={getDashboardLink()}
-                  onClick={() => setMobileMenuOpen(false)}
-                  className="block px-3 py-2 rounded-lg text-sm font-medium text-brand-600 bg-brand-50"
-                >
-                  Go to Dashboard
-                </Link>
-                <button
-                  onClick={handleLogout}
-                  className="block w-full text-left px-3 py-2 rounded-lg text-sm font-medium text-rose-600 hover:bg-rose-50"
-                >
-                  Sign Out
-                </button>
+        <div className="mobile-nav-panel">
+          <Link to="/" onClick={closeMobile} className={navClass('/')}>Home</Link>
+          <Link to="/doctors" onClick={closeMobile} className={navClass('/doctors')}><Stethoscope className="w-4 h-4" /> Find doctors</Link>
+          <Link to="/queue-display" onClick={closeMobile} className={navClass('/queue-display')}><Tv className="w-4 h-4" /> Queue display</Link>
+          <div className="mobile-nav-divider" />
+          {isAuthenticated ? (
+            <>
+              <div className="mobile-user-summary">
+                <img src={user.avatar || `https://api.dicebear.com/7.x/personas/svg?seed=${encodeURIComponent(user.name)}`} alt="" />
+                <div><strong>{user.name}</strong><span>{user.role} account</span></div>
               </div>
-            ) : (
-              <div className="grid grid-cols-2 gap-2 pt-1">
-                <Link
-                  to="/login"
-                  onClick={() => setMobileMenuOpen(false)}
-                  className="text-center py-2 text-xs font-semibold text-slate-700 bg-slate-100 rounded-lg"
-                >
-                  Sign In
-                </Link>
-                <Link
-                  to="/register"
-                  onClick={() => setMobileMenuOpen(false)}
-                  className="text-center py-2 text-xs font-semibold text-white bg-brand-600 rounded-lg"
-                >
-                  Register
-                </Link>
-              </div>
-            )}
-          </div>
+              <Link to={getDashboardLink()} onClick={closeMobile} className="mobile-dashboard-link"><LayoutDashboard className="w-4 h-4" /> Go to dashboard</Link>
+              <button type="button" onClick={handleLogout} className="mobile-signout"><LogOut className="w-4 h-4" /> Sign out</button>
+            </>
+          ) : (
+            <div className="mobile-auth-actions">
+              <Link to="/login" onClick={closeMobile} className="mobile-login">Sign in</Link>
+              <Link to="/register" onClick={closeMobile} className="mobile-register">Create account <ArrowUpRight className="w-4 h-4" /></Link>
+            </div>
+          )}
         </div>
       )}
     </header>

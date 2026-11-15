@@ -21,12 +21,12 @@ const appointmentSchema = new mongoose.Schema(
       index: true,
     },
     date: {
-      type: String,
+      type: String, // Format: YYYY-MM-DD for fast, timezone-safe querying
       required: [true, 'Appointment date is required'],
       index: true,
     },
     timeSlot: {
-      type: String,
+      type: String, // e.g., "09:20 AM"
       required: [true, 'Time slot is required'],
     },
     reason: {
@@ -90,6 +90,8 @@ const appointmentSchema = new mongoose.Schema(
   }
 );
 
+// Prevent double-booking race conditions:
+// Ensure doctor, date, and timeSlot are strictly unique for active appointments
 appointmentSchema.index(
   { doctorId: 1, date: 1, timeSlot: 1 },
   {

@@ -51,7 +51,7 @@ const queueSchema = new mongoose.Schema(
       index: true,
     },
     date: {
-      type: String,
+      type: String, // YYYY-MM-DD
       required: true,
       index: true,
     },
@@ -75,6 +75,7 @@ const queueSchema = new mongoose.Schema(
   }
 );
 
+// Unique queue per doctor per date
 queueSchema.index({ doctorId: 1, date: 1 }, { unique: true });
 
 const Queue = mongoose.model('Queue', queueSchema);

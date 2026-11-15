@@ -75,6 +75,7 @@ const PatientDashboard = () => {
 
   return (
     <div className="space-y-6">
+      {/* Clean Welcome Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-2 border-b border-slate-200">
         <div>
           <h1 className="text-xl sm:text-2xl font-bold text-slate-900 tracking-tight">
@@ -103,6 +104,7 @@ const PatientDashboard = () => {
         </div>
       </div>
 
+      {/* Metric Cards Row */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
         <div className="bg-white p-4 rounded-xl border border-slate-200">
           <p className="text-xs text-slate-500">Active Token</p>
@@ -139,6 +141,7 @@ const PatientDashboard = () => {
         </div>
       </div>
 
+      {/* Active Queue Card (If active today) */}
       {activeTodayToken && (
         <div className="bg-white rounded-2xl p-5 border border-slate-200 space-y-4">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
@@ -178,7 +181,9 @@ const PatientDashboard = () => {
         </div>
       )}
 
+      {/* Grid: Upcoming Appointments & Reports */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+        {/* Appointments (7 cols) */}
         <div className="lg:col-span-7 bg-white rounded-2xl p-5 border border-slate-200 space-y-3">
           <div className="flex items-center justify-between pb-2 border-b border-slate-100">
             <h3 className="text-sm font-bold text-slate-900">Upcoming Appointments</h3>
@@ -220,6 +225,7 @@ const PatientDashboard = () => {
           )}
         </div>
 
+        {/* Reports (5 cols) */}
         <div className="lg:col-span-5 bg-white rounded-2xl p-5 border border-slate-200 space-y-3">
           <div className="flex items-center justify-between pb-2 border-b border-slate-100">
             <h3 className="text-sm font-bold text-slate-900">Medical Reports</h3>

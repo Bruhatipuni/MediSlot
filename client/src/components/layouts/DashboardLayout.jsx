@@ -29,13 +29,13 @@ const DashboardLayout = ({ allowedRoles = [] }) => {
   }
 
   return (
-    <div className="min-h-screen flex flex-col bg-slate-50/60">
+    <div className="min-h-screen flex flex-col dashboard-canvas">
       <Navbar />
-      <div className="flex flex-1 max-w-7xl w-full mx-auto">
+      <div className="flex flex-1 max-w-[1440px] w-full mx-auto">
         <div className="hidden md:block">
           <Sidebar />
         </div>
-        <main className="flex-1 p-4 sm:p-6 lg:p-8 overflow-y-auto">
+        <main className="flex-1 min-w-0 p-4 sm:p-6 lg:p-8 overflow-y-auto">
           <Outlet />
         </main>
       </div>

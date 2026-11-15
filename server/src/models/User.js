@@ -24,7 +24,7 @@ const userSchema = new mongoose.Schema(
       type: String,
       required: [true, 'Please provide password'],
       minlength: [6, 'Password must be at least 6 characters long'],
-      select: false,
+      select: false, // Don't return password by default in queries
     },
     role: {
       type: String,
@@ -67,6 +67,7 @@ const userSchema = new mongoose.Schema(
   }
 );
 
+// Hash password before saving
 userSchema.pre('save', async function (next) {
   if (!this.isModified('password')) {
     return next();
@@ -76,10 +77,12 @@ userSchema.pre('save', async function (next) {
   next();
 });
 
+// Compare password method
 userSchema.methods.matchPassword = async function (enteredPassword) {
   return await bcrypt.compare(enteredPassword, this.password);
 };
 
+// Safe JSON serialization
 userSchema.methods.toJSON = function () {
   const user = this.toObject();
   delete user.password;

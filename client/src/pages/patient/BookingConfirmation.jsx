@@ -61,6 +61,7 @@ const BookingConfirmation = () => {
 
   return (
     <div className="max-w-2xl mx-auto space-y-6 animate-fadeIn">
+      {/* Breadcrumb Navigation */}
       <nav className="flex items-center gap-2 text-xs font-semibold text-slate-500 print:hidden">
         <Link to="/patient/dashboard" className="hover:text-brand-600 transition-colors">Portal</Link>
         <ChevronRight className="w-3.5 h-3.5 text-slate-400" />
@@ -69,7 +70,9 @@ const BookingConfirmation = () => {
         <span className="text-slate-800 font-bold">Confirmation Slip</span>
       </nav>
 
+      {/* Main Boarding Pass / Clinical Slip */}
       <div className="bg-white rounded-3xl border border-slate-200/80 shadow-soft overflow-hidden print:shadow-none print:border-slate-300">
+        {/* Top Header Banner */}
         <div className="bg-gradient-to-r from-brand-600 to-medteal-600 text-white p-6 sm:p-8 text-center relative overflow-hidden">
           <div className="w-14 h-14 rounded-2xl bg-white/20 backdrop-blur-md text-white flex items-center justify-center mx-auto mb-3 shadow-sm border border-white/30">
             <CheckCircle2 className="w-8 h-8" />
@@ -85,6 +88,7 @@ const BookingConfirmation = () => {
           </p>
         </div>
 
+        {/* Digital Token Section */}
         <div className="p-6 sm:p-8 space-y-6">
           <div className="p-6 rounded-3xl bg-gradient-to-br from-brand-50 to-medteal-50/50 border border-brand-200/80 text-center relative overflow-hidden">
             <p className="text-[11px] font-extrabold uppercase tracking-widest text-brand-700">
@@ -99,12 +103,14 @@ const BookingConfirmation = () => {
             </div>
           </div>
 
+          {/* Perforated separator simulation */}
           <div className="relative flex items-center justify-between">
             <div className="w-4 h-8 bg-slate-100 -ml-8 rounded-r-full border-r border-slate-200/80" />
             <div className="w-full border-b-2 border-dashed border-slate-200 mx-2" />
             <div className="w-4 h-8 bg-slate-100 -mr-8 rounded-l-full border-l border-slate-200/80" />
           </div>
 
+          {/* Appointment Ticket Details */}
           <div className="space-y-4 text-xs">
             <div className="grid grid-cols-2 gap-4 bg-slate-50 p-4 rounded-2xl border border-slate-100">
               <div>
@@ -138,6 +144,7 @@ const BookingConfirmation = () => {
               </div>
             </div>
 
+            {/* Check-in Guidance */}
             <div className="p-4 bg-emerald-50/70 border border-emerald-200/70 rounded-2xl text-emerald-900 space-y-1">
               <p className="font-bold flex items-center gap-1.5 text-xs">
                 <ShieldCheck className="w-4 h-4 text-emerald-600" />
@@ -149,11 +156,13 @@ const BookingConfirmation = () => {
             </div>
           </div>
 
+          {/* Simulated Digital Barcode */}
           <div className="pt-2 text-center">
             <div className="h-8 w-48 mx-auto bg-[repeating-linear-gradient(90deg,#0f172a,#0f172a_2px,transparent_2px,transparent_4px,#0f172a_4px,#0f172a_7px,transparent_7px,transparent_9px)] opacity-60" />
             <p className="text-[10px] font-mono text-slate-400 mt-1">*{appointment.appointmentId}*</p>
           </div>
 
+          {/* Action Buttons */}
           <div className="pt-2 flex flex-col sm:flex-row items-center justify-center gap-3 print:hidden">
             <Link
               to="/patient/tokens"

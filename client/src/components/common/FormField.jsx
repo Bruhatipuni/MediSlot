@@ -1,6 +1,16 @@
 import React from 'react';
 import { AlertCircle } from 'lucide-react';
 
+/**
+ * ============================================================================
+ * UNIT II & IV: Reusable FormField Component with ARIA Accessibility
+ * ============================================================================
+ * Demonstrates:
+ * - Props-driven component reusability and composition.
+ * - Semantic HTML (<label>, <input>, error description with role="alert").
+ * - Accessibility attributes: htmlFor, aria-invalid, aria-describedby.
+ * - Conditional rendering of icons, required indicators, and validation error messages.
+ */
 const FormField = ({
   label,
   name,
@@ -65,6 +75,7 @@ const FormField = ({
         </div>
       )}
 
+      {/* Accessible Validation Error Message */}
       {error && (
         <div
           id={errorId}

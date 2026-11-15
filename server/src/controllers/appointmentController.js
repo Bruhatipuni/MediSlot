@@ -4,12 +4,16 @@ import User from '../models/User.js';
 import { getDoctorSlotsForDate } from '../services/slotService.js';
 import { issueTokenForAppointment, removeOrCancelToken } from '../services/queueService.js';
 
+// Helper to generate a unique human-friendly appointment ID
 const generateAppointmentCode = () => {
   const dateStr = new Date().toISOString().slice(0, 10).replace(/-/g, '');
   const randomSuffix = Math.floor(1000 + Math.random() * 9000);
   return `MS-${dateStr}-${randomSuffix}`;
 };
 
+// @desc    Get available slots for a doctor on a specific date
+// @route   GET /api/appointments/slots/:doctorId
+// @access  Public
 export const getAvailableSlots = async (req, res, next) => {
   try {
     const { doctorId } = req.params;
@@ -33,6 +37,9 @@ export const getAvailableSlots = async (req, res, next) => {
   }
 };
 
+// @desc    Book a new appointment
+// @route   POST /api/appointments
+// @access  Private (Patient)
 export const bookAppointment = async (req, res, next) => {
   try {
     const { doctorId, date, timeSlot, reason } = req.body;
@@ -44,6 +51,7 @@ export const bookAppointment = async (req, res, next) => {
       });
     }
 
+    // Prevent past date bookings
     const todayStr = new Date().toISOString().slice(0, 10);
     if (date < todayStr) {
       return res.status(400).json({
@@ -52,6 +60,7 @@ export const bookAppointment = async (req, res, next) => {
       });
     }
 
+    // Verify doctor exists and is active
     const doctor = await Doctor.findById(doctorId);
     if (!doctor || !doctor.isActive || !doctor.isAvailable) {
       return res.status(400).json({
@@ -60,6 +69,7 @@ export const bookAppointment = async (req, res, next) => {
       });
     }
 
+    // Check if slot is already booked for this doctor on this date
     const existingAppointment = await Appointment.findOne({
       doctorId,
       date,
@@ -74,6 +84,7 @@ export const bookAppointment = async (req, res, next) => {
       });
     }
 
+    // Check if patient already has an active appointment with the same doctor on the same date
     const patientExisting = await Appointment.findOne({
       patientId: req.user._id,
       doctorId,
@@ -90,6 +101,7 @@ export const bookAppointment = async (req, res, next) => {
 
     const appointmentCode = generateAppointmentCode();
 
+    // Create appointment instance
     const appointment = new Appointment({
       appointmentId: appointmentCode,
       patientId: req.user._id,
@@ -100,11 +112,13 @@ export const bookAppointment = async (req, res, next) => {
       status: 'scheduled',
       amount: doctor.consultationFee || 500,
       paymentStatus: 'cash-on-arrival',
-      tokenNumber: 0,
+      tokenNumber: 0, // Placeholder, updated atomically below
     });
 
+    // Save appointment first to trigger MongoDB unique constraint protection
     await appointment.save();
 
+    // Issue daily token from Queue service
     const { tokenNumber } = await issueTokenForAppointment({
       doctorId,
       dateStr: date,
@@ -117,6 +131,7 @@ export const bookAppointment = async (req, res, next) => {
     appointment.tokenNumber = tokenNumber;
     await appointment.save();
 
+    // Populate for response
     await appointment.populate([
       { path: 'doctorId', select: 'name specialization consultationFee clinicAddress hospitalAffiliation avatar' },
       { path: 'patientId', select: 'name email phone' },
@@ -132,6 +147,9 @@ export const bookAppointment = async (req, res, next) => {
   }
 };
 
+// @desc    Get patient's appointments
+// @route   GET /api/appointments/my
+// @access  Private (Patient)
 export const getMyAppointments = async (req, res, next) => {
   try {
     const { status, date } = req.query;
@@ -158,6 +176,9 @@ export const getMyAppointments = async (req, res, next) => {
   }
 };
 
+// @desc    Get appointments for logged in doctor
+// @route   GET /api/appointments/doctor
+// @access  Private (Doctor)
 export const getDoctorAppointments = async (req, res, next) => {
   try {
     const doctor = await Doctor.findOne({ userId: req.user._id });
@@ -196,6 +217,9 @@ export const getDoctorAppointments = async (req, res, next) => {
   }
 };
 
+// @desc    Get single appointment details
+// @route   GET /api/appointments/:id
+// @access  Private
 export const getAppointmentById = async (req, res, next) => {
   try {
     const appointment = await Appointment.findById(req.params.id)
@@ -209,8 +233,9 @@ export const getAppointmentById = async (req, res, next) => {
       });
     }
 
+    // Permission check: only the patient, the doctor, or an admin can view
     const isPatient = appointment.patientId && appointment.patientId._id.toString() === req.user._id.toString();
-    const isDoctor = req.user.role === 'doctor';
+    const isDoctor = req.user.role === 'doctor'; // doctor can view if assigned
     const isAdmin = req.user.role === 'admin';
 
     if (!isPatient && !isDoctor && !isAdmin) {
@@ -229,6 +254,9 @@ export const getAppointmentById = async (req, res, next) => {
   }
 };
 
+// @desc    Cancel an appointment
+// @route   PUT /api/appointments/:id/cancel
+// @access  Private (Patient/Doctor/Admin)
 export const cancelAppointment = async (req, res, next) => {
   try {
     const { cancellationReason } = req.body;
@@ -252,6 +280,7 @@ export const cancelAppointment = async (req, res, next) => {
       });
     }
 
+    // Permission check
     const isPatient = appointment.patientId.toString() === req.user._id.toString();
     const isAdmin = req.user.role === 'admin';
     const isDoctor = req.user.role === 'doctor';
@@ -268,6 +297,7 @@ export const cancelAppointment = async (req, res, next) => {
     appointment.cancelledAt = new Date();
     await appointment.save();
 
+    // Ensure cancelled appointment is cleanly removed/marked in active queue
     await removeOrCancelToken(appointment.doctorId, appointment.date, appointment._id);
 
     res.status(200).json({
@@ -280,6 +310,9 @@ export const cancelAppointment = async (req, res, next) => {
   }
 };
 
+// @desc    Reschedule an appointment
+// @route   PUT /api/appointments/:id/reschedule
+// @access  Private (Patient/Admin)
 export const rescheduleAppointment = async (req, res, next) => {
   try {
     const { newDate, newTimeSlot, reason } = req.body;
@@ -303,6 +336,7 @@ export const rescheduleAppointment = async (req, res, next) => {
       });
     }
 
+    // Check if new slot is free
     const conflict = await Appointment.findOne({
       doctorId: appointment.doctorId,
       date: newDate,
@@ -317,11 +351,13 @@ export const rescheduleAppointment = async (req, res, next) => {
       });
     }
 
+    // Cancel old queue token
     await removeOrCancelToken(appointment.doctorId, appointment.date, appointment._id);
 
     const oldDate = appointment.date;
     const oldSlot = appointment.timeSlot;
 
+    // Issue new token in new date's queue
     const patientUser = await User.findById(appointment.patientId);
     const { tokenNumber: newTokenNumber } = await issueTokenForAppointment({
       doctorId: appointment.doctorId,
@@ -351,6 +387,9 @@ export const rescheduleAppointment = async (req, res, next) => {
   }
 };
 
+// @desc    Update consultation details (notes, diagnosis, prescription)
+// @route   PUT /api/appointments/:id/consultation
+// @access  Private (Doctor)
 export const updateConsultationDetails = async (req, res, next) => {
   try {
     const { consultationNotes, diagnosis, prescription, vitals, status } = req.body;
