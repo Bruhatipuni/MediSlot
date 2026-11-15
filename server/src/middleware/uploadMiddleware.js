@@ -7,14 +7,19 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 // Upload destination for reports (private, non-public storage)
-const reportsDir = path.join(__dirname, '../../uploads/reports');
-if (!fs.existsSync(reportsDir)) {
-  fs.mkdirSync(reportsDir, { recursive: true });
+const isVercel = process.env.VERCEL === '1';
+export const reportsStorageDir = isVercel ? '/tmp' : path.join(__dirname, '../../uploads/reports');
+try {
+  if (!fs.existsSync(reportsStorageDir)) {
+    fs.mkdirSync(reportsStorageDir, { recursive: true });
+  }
+} catch (e) {
+  console.warn('[Upload directory warning]:', e.message);
 }
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, reportsDir);
+    cb(null, reportsStorageDir);
   },
   filename: (req, file, cb) => {
     const ext = path.extname(file.originalname).toLowerCase();

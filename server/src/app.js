@@ -26,10 +26,24 @@ if (process.env.NODE_ENV !== 'test') {
   app.use(morgan('dev'));
 }
 
+let isDatabaseSeededOrChecked = false;
+
 // Auto-connect to MongoDB for serverless / Vercel execution
 app.use(async (req, res, next) => {
   try {
     await connectDB();
+
+    if (!isDatabaseSeededOrChecked) {
+      isDatabaseSeededOrChecked = true;
+      const User = (await import('./models/User.js')).default;
+      const count = await User.countDocuments();
+      if (count === 0) {
+        console.log('[Auto-Seed] Database is empty. Seeding initial doctors, demo users, and clinic queues...');
+        const seedData = (await import('./seeds/seed.js')).default;
+        await seedData();
+      }
+    }
+
     next();
   } catch (err) {
     console.error('[DB Middleware Error]:', err.message);

@@ -6,16 +6,28 @@ import { fileURLToPath } from 'url';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-const reportsDir = path.join(__dirname, '../../uploads/reports');
-if (!fs.existsSync(reportsDir)) {
-  fs.mkdirSync(reportsDir, { recursive: true });
+const isVercel = process.env.VERCEL === '1';
+const reportsDir = isVercel ? '/tmp' : path.join(__dirname, '../../uploads/reports');
+try {
+  if (!fs.existsSync(reportsDir)) {
+    fs.mkdirSync(reportsDir, { recursive: true });
+  }
+} catch (e) {
+  console.warn('[PDF Warning]:', e.message);
 }
 
 export const createPdfReport = (filename, title, patientName, doctorName, date, details) => {
   return new Promise((resolve, reject) => {
-    const filePath = path.join(reportsDir, filename);
-    const doc = new PDFDocument({ margin: 50, size: 'A4' });
-    const writeStream = fs.createWriteStream(filePath);
+    try {
+      const filePath = path.join(reportsDir, filename);
+      const doc = new PDFDocument({ margin: 50, size: 'A4' });
+      const writeStream = fs.createWriteStream(filePath);
+
+      writeStream.on('finish', resolve);
+      writeStream.on('error', (err) => {
+        console.warn('[PDF write error]:', err.message);
+        resolve(); // gracefully resolve so seeding never crashes
+      });
 
     doc.pipe(writeStream);
 

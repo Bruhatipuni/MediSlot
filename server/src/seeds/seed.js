@@ -13,9 +13,11 @@ const MONGO_URI = process.env.MONGO_URI || 'mongodb://127.0.0.1:27017/medislot_d
 
 const seedData = async () => {
   try {
-    console.log('[Seed] Connecting to MongoDB...');
-    await mongoose.connect(MONGO_URI);
-    console.log('[Seed] Connected.');
+    if (mongoose.connection.readyState !== 1) {
+      console.log('[Seed] Connecting to MongoDB...');
+      await mongoose.connect(MONGO_URI);
+      console.log('[Seed] Connected.');
+    }
 
     // Clear existing collections
     console.log('[Seed] Cleaning existing data...');
@@ -726,11 +728,20 @@ const seedData = async () => {
     console.log(` Seeded: 8 Doctors, 5 Patients, 8 Appointments, Queues & 3 Valid PDF Reports.`);
     console.log('====================================================');
 
-    process.exit(0);
+    return true;
   } catch (error) {
     console.error('[Seed] Error during database seeding:', error);
-    process.exit(1);
+    throw error;
   }
 };
 
-seedData();
+export default seedData;
+
+if (process.argv[1] && process.argv[1].includes('seed.js')) {
+  seedData()
+    .then(() => process.exit(0))
+    .catch((err) => {
+      console.error(err);
+      process.exit(1);
+    });
+}
