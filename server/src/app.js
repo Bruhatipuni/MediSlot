@@ -54,6 +54,14 @@ app.use(async (req, res, next) => {
   }
 });
 
+// URL normalizer: ensures requests hit routes whether or not /api was stripped by serverless proxy
+app.use((req, res, next) => {
+  if (!req.url.startsWith('/api')) {
+    req.url = '/api' + (req.url.startsWith('/') ? req.url : '/' + req.url);
+  }
+  next();
+});
+
 // Health check endpoint
 app.get('/api/health', (req, res) => {
   res.status(200).json({

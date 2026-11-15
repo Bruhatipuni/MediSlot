@@ -2,13 +2,25 @@
   "name": "medislot",
   "version": "1.0.0",
   "description": "MediSlot — Doctor Appointment & Clinic Queue Management System",
+  "type": "module",
   "scripts": {
+    "build": "cd client && npm install && npm run build",
     "install:all": "npm --prefix server install && npm --prefix client install",
     "client": "npm --prefix client run dev",
     "server": "npm --prefix server run dev",
-    "build": "npm --prefix client run build",
     "test": "npm --prefix server test",
     "seed": "npm --prefix server run seed"
+  },
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "jsonwebtoken": "^9.0.2",
+    "mongoose": "^8.9.5",
+    "morgan": "^1.10.0",
+    "multer": "^1.4.5-lts.1",
+    "pdfkit": "^0.15.0"
   },
   "keywords": [
     "react",
